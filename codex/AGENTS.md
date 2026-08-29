@@ -33,10 +33,10 @@ Override do utilizador (`stop caveman`, `/caveman lite|ultra`) prevalece sempre.
 
 ## Modelo e effort — obrigatorio
 
-| CLI | Modelo | Effort |
-|---|---|---|
-| Codex | `gpt-5.6-sol` | `medium` |
-| Claude | `opus` | `high` |
+| CLI | Modelo | Effort | |
+|---|---|---|---|
+| Codex | `gpt-5.6-sol` | `medium` | (`personality = "pragmatic"`) |
+| Claude | `opus` | `high` | |
 
 Declarado em [`baseline.json`](../baseline.json) e verificado pelo `setup.mjs`. Nao e preferencia:
 regras iguais com effort diferente produzem trabalho diferente, e isso le-se como o modelo ser

@@ -222,13 +222,16 @@ if (baseline && baseline.models) {
     const pick = (key) => (toml.match(new RegExp(`^${key}\\s*=\\s*"([^"]+)"`, 'm')) || [, null])[1];
     const model = pick('model');
     const effort = pick('model_reasoning_effort');
-    if (model === wantCodex.model && effort === wantCodex.model_reasoning_effort) {
-      ok('modelo codex', `${model}/${effort}`);
+    const personality = pick('personality');
+    const want = `${wantCodex.model}/${wantCodex.model_reasoning_effort}/${wantCodex.personality}`;
+    const got = `${model || '—'}/${effort || '—'}/${personality || 'ausente'}`;
+    if (got === want) {
+      ok('modelo codex', got);
     } else {
       human(
         'modelo codex',
-        `${model || '—'}/${effort || '—'} — declarado: ${wantCodex.model}/${wantCodex.model_reasoning_effort}`,
-        `editar as duas chaves de topo de ~/.codex/config.toml, preservando o resto do ficheiro`
+        `${got} — declarado: ${want}`,
+        `editar as chaves de topo de ~/.codex/config.toml, preservando o resto do ficheiro`
       );
     }
   }

@@ -105,7 +105,8 @@ add('modelo-claude', `${claudeSettings.model || 'default'}/${claudeSettings.effo
 
 const codexConfig = readText(path.join(home, '.codex', 'config.toml')) || '';
 const pick = (key) => (codexConfig.match(new RegExp(`^${key}\\s*=\\s*"?([^"\\n]+)"?`, 'm')) || [, '—'])[1].trim();
-add('modelo-codex', `${pick('model')}/${pick('model_reasoning_effort')}`, `personality: ${pick('personality')}`);
+// personality entra no valor, nao no detalhe: muda o registo das respostas com as mesmas regras.
+add('modelo-codex', `${pick('model')}/${pick('model_reasoning_effort')}/${pick('personality')}`, 'modelo, effort e personality');
 
 // ---------- Relatório ----------
 
