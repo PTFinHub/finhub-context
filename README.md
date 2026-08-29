@@ -13,8 +13,21 @@ a este repo à sua maneira.
 | `finhub-core` | `caveman`, `typescript-advanced-types` |
 | `finhub-web` | `accessibility`, `frontend-design`, `playwright-best-practices`, `seo`, `shadcn`, `tailwind-css-patterns`, `tailwind-v4-shadcn`, `vercel-composition-patterns`, `vercel-react-best-practices`, `vite`, `vitest` |
 | `finhub-api` | `nodejs-backend-patterns`, `nodejs-best-practices`, `nodejs-express-server` |
+| `finhub-workflow` | comandos `/novo-lote` e `/fecha-lote` |
 
 Formato `SKILL.md`, lido por Claude Code, Codex e restantes agentes compatíveis.
+
+## O que fica de fora, e porquê
+
+Só migra para aqui o que é **reutilizável entre repos**. Fica no repo de código:
+
+- `AGENTS.md`, `CLAUDE.md`, `dcos/**` — específicos do projecto, e já portáteis via git
+- `/gates` e `/report` — invocam os scripts do `package.json` de cada repo
+  (`corepack yarn typecheck:p1` no frontend, `npm run typecheck` no backend), por isso
+  não têm versão partilhada possível
+
+`/novo-lote` e `/fecha-lote` não invocam nenhum script — só leem `dcos/finhub/TASKS.md` e
+chamam o `/gates` local — por isso vivem aqui e servem qualquer repo.
 
 ## Como cada superfície se liga
 

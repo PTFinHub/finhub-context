@@ -1,0 +1,6 @@
+{
+  "name": "finhub-workflow",
+  "description": "Comandos de lote partilhados por todos os repos FinHub: /novo-lote e /fecha-lote.",
+  "version": "1.0.0",
+  "author": { "name": "PTFinHub" }
+}

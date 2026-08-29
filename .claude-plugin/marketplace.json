@@ -22,6 +22,15 @@
       "source": "./plugins/finhub-api",
       "description": "Skills de backend Node.js: padroes Express, boas praticas e estrutura de servidor.",
       "version": "1.0.0"
+    },
+    {
+      "name": "finhub-workflow",
+      "source": "./plugins/finhub-workflow",
+      "description": "Comandos de lote partilhados: /novo-lote e /fecha-lote.",
+      "version": "1.0.0"
     }
-  ]
+  ],
+  "metadata": {
+    "description": "Fonte unica das skills e comandos de workflow dos agentes de IA dos projectos FinHub."
+  }
 }
