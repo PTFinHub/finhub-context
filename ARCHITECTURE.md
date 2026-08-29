@@ -93,11 +93,20 @@ específico do Claude. Duplicar factos entre os dois é o que os fez divergir no
 | Comandos de lote | plugin `finhub-workflow` | — |
 | Memória | `autoMemoryDirectory` → repo | por regra escrita |
 | **Travão em sessão** | **hook `PreToolUse`** | **nenhum** |
-| Travão antes do merge | CI | CI |
+| Travão antes do commit | hook + `pre-commit` | `pre-commit` (só no frontend) |
+| Travão antes do merge | CI — **não corre** | CI — **não corre** |
 
 O desequilíbrio é real e não tem solução hoje: os hooks do Codex são experimentais e **não existem
-em Windows**. O Codex — que é quem mais aplica — depende da regra escrita. O CI é a rede que o
-apanha antes do merge, e é por isso que o CI existe.
+em Windows**. O Codex — que é quem mais aplica — depende da regra escrita.
+
+> ⚠️ **O CI não corre nos repos privados.** Todos os jobs do `FinhubFront` e do `Finhub_Back`
+> terminam com 0 passos executados e sem log, pelo menos desde 2026-08-25 — antes de qualquer
+> alteração nossa. No `finhub-context`, que é público, os mesmos workflows correm 8–9 passos e
+> passam. A diferença entre os repos é a visibilidade, o que aponta para minutos ou limite de
+> gastos de Actions esgotados na org (não consegui ler o billing — precisa de `admin:org`).
+>
+> Enquanto isso não for resolvido, **a rede que devia apanhar o Codex não existe**. A mitigação
+> possível é o hook `pre-commit` do git, que corre na máquina independentemente do GitHub.
 
 ---
 
@@ -160,7 +169,9 @@ Lista o que existe localmente e não está no repo, o que diverge, e o que falta
 
 | Ponto fraco | Impacto | Estado |
 |---|---|---|
+| **GitHub Actions não corre nos repos privados** | o CI que servia de rede para o Codex não existe na prática | **bloqueante** — verificar minutos/limite de gastos de Actions da org |
 | Codex sem travão em sessão (Windows) | regra escrita, não garantida | limitação da ferramenta — reavaliar quando os hooks saírem de experimental |
+| Backend sem `pre-commit` | a guarda local só existe no frontend, que tem husky | adicionar husky ao backend ou aceitar |
 | Dois `TASKS.md` a contradizerem-se | frontend diz `BUD-FEM-05` (2026-07-28), overlay do backend diz outra coisa (2026-08-27) | **precisa de decisão: qual é canónico** |
 | `~/.claude/settings.json` e `~/.codex/config.toml` não distribuídos | modelo, effort e preferências podem diferir entre máquinas | por resolver |
 | `browser-automation` e `taste-skill` sem licença | não podem entrar num repo público | por resolver: confirmar origem |
