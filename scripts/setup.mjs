@@ -88,13 +88,37 @@ if (!fs.existsSync(pluginsDir)) {
   ok('claude', 'não instalado nesta máquina');
 } else {
   const known = readJson(path.join(pluginsDir, 'known_marketplaces.json')) || {};
-  if (!known.finhub) {
-    todo('claude', 'marketplace finhub não registado', 'claude plugin marketplace add PTFinHub/finhub-context');
-  } else if (apply) {
-    run('claude', ['plugin', 'marketplace', 'update', 'finhub']);
-    ok('claude', 'marketplace actualizado');
+  const manifest = readJson(path.join(repoRoot, 'plugins.json')) || { claude: [] };
+  const installed = readJson(path.join(pluginsDir, 'installed_plugins.json'));
+  const have = new Set(Object.keys((installed && installed.plugins) || {}));
+  const wanted = manifest.claude.filter((p) => p.required && !have.has(`${p.name}@${p.marketplace}`));
+
+  if (!apply) {
+    if (!known.finhub) todo('claude', 'marketplace finhub não registado', 'node scripts/setup.mjs --apply');
+    else if (wanted.length) todo('claude', `${wanted.length} plugin(s) obrigatório(s) por instalar`, 'node scripts/setup.mjs --apply');
+    else ok('claude', 'marketplace registado, plugins instalados');
   } else {
-    ok('claude', 'marketplace registado');
+    // Registar e instalar, nao so relatar: numa maquina nova isto e o que evita
+    // ter de pedir ao agente que va ler o repo antes de o /cerebro existir.
+    if (!known.finhub) run('claude', ['plugin', 'marketplace', 'add', 'PTFinHub/finhub-context']);
+    else run('claude', ['plugin', 'marketplace', 'update', 'finhub']);
+
+    const failed = [];
+    for (const p of wanted) {
+      const r = run('claude', ['plugin', 'install', `${p.name}@${p.marketplace}`]);
+      if (r.status !== 0) failed.push(p.name);
+    }
+
+    const after = readJson(path.join(pluginsDir, 'known_marketplaces.json')) || {};
+    if (!after.finhub) {
+      todo('claude', 'marketplace continua por registar', 'confirmar que o CLI `claude` esta no PATH');
+    } else if (failed.length) {
+      todo('claude', `falhou a instalar: ${failed.join(', ')}`, 'claude plugin install <nome>@finhub');
+    } else if (wanted.length) {
+      human('claude', `${wanted.length} plugin(s) instalado(s)`, 'reiniciar a sessao para os comandos e skills entrarem');
+    } else {
+      ok('claude', 'marketplace actualizado, plugins já instalados');
+    }
   }
 }
 

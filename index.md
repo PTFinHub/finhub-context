@@ -4,11 +4,22 @@ Este repo é o cérebro dos agentes de IA do FinHub. Regras, skills, comandos, a
 vivem aqui; cada máquina e cada CLI ligam-se à mesma fonte. Só fica local o que não pode ser
 partilhado — credenciais, caminhos, preferências pessoais.
 
-**Máquina nova, ou máquina que não sabes se está em dia:**
+**Máquina nova — do zero, sem depender de nenhum agente:**
 
 ```bash
+git clone https://github.com/PTFinHub/finhub-context.git
+cd finhub-context
 node scripts/setup.mjs --apply
 ```
+
+São as duas únicas coisas que tens de saber de cor: o URL e o comando. Nada mais precisa de
+existir na máquina — o repo é público, o clone é anónimo.
+
+O `--apply` regista o marketplace, instala os plugins obrigatórios do Claude, liga as skills, os
+agentes e as regras universais ao Codex. **Os comandos do Claude só aparecem na sessão seguinte** —
+é assim que os plugins funcionam, e o script diz-to.
+
+**Máquina que já usas, para confirmar que está em dia:** o mesmo comando.
 
 Um comando. Actualiza o repo, liga as skills, os agentes e as regras universais ao Codex, refresca
 o marketplace do Claude, verifica o baseline de plugins, confirma que a memória aponta para dentro
