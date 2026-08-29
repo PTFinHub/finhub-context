@@ -22,6 +22,33 @@ jobs:
       - name: Validar catalogo, manifestos e frontmatter das skills
         run: node scripts/validate.mjs
 
+      - name: Exigir bump de version em cada plugin alterado
+        if: github.event_name == 'pull_request'
+        run: |
+          base="origin/${{ github.base_ref }}"
+          git fetch --quiet origin "${{ github.base_ref }}"
+          failed=0
+
+          for plugin in plugins/*/; do
+            name=$(basename "$plugin")
+            manifest="$plugin.claude-plugin/plugin.json"
+            [ -f "$manifest" ] || continue
+
+            git diff --quiet "$base"...HEAD -- "$plugin" && continue
+
+            before=$(git show "$base:$manifest" 2>/dev/null | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{console.log(JSON.parse(s).version)}catch{console.log('')}})")
+            after=$(node -e "console.log(require('./$manifest').version)")
+
+            if [ "$before" = "$after" ]; then
+              echo "::error::$name mudou mas continua na version $after. Sem bump, o cache do Claude e indexado pela versao antiga e as maquinas ja instaladas nunca recebem a alteracao: claude plugin update responde \"already at the latest version\"."
+              failed=1
+            else
+              echo "$name: $before -> $after"
+            fi
+          done
+
+          exit $failed
+
       - name: Confirmar LF em todo o markdown
         run: |
           if grep -rlIU $'\r' --include='*.md' .; then

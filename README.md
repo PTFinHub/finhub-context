@@ -86,7 +86,8 @@ Vem do `.claude/settings.json` do repo clonado. Nada a fazer.
 ## Validacao
 
 ```bash
-node scripts/validate.mjs
+node scripts/validate.mjs     # catalogo, manifestos, frontmatter
+node scripts/audit-local.mjs  # o que esta nesta maquina e nao no repo
 ```
 
 Corre no CI a cada PR (`.github/workflows/validate.yml`): catalogo e manifestos coerentes,
