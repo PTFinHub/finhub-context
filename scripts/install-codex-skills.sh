@@ -40,6 +40,23 @@ for skill in "$REPO_DIR"/plugins/*/skills/*/; do
   linked=$((linked + 1))
 done
 
+# Agentes do Codex (~/.codex/agents) — mesma politica nao destrutiva
+AGENTS_DIR="${CODEX_AGENTS_DIR:-$HOME/.codex/agents}"
+mkdir -p "$AGENTS_DIR"
+agents=0
+for agent in "$REPO_DIR"/codex/agents/*.toml; do
+  [ -f "$agent" ] || continue
+  target="$AGENTS_DIR/$(basename "$agent")"
+  if [ -e "$target" ] && [ ! -L "$target" ] && [ "$FORCE" != "1" ]; then
+    echo "  ! $(basename "$agent") ja existe como ficheiro real — nao tocado"
+    continue
+  fi
+  rm -f "$target"
+  ln -s "$agent" "$target"
+  agents=$((agents + 1))
+done
+
 echo "finhub-context: $linked skills ligadas em $SKILLS_DIR"
+[ "$agents" -gt 0 ] && echo "finhub-context: $agents agentes ligados em $AGENTS_DIR"
 [ "$skipped" -gt 0 ] && echo "finhub-context: $skipped ignoradas por conflito"
 exit 0

@@ -46,5 +46,27 @@ Get-ChildItem -Path (Join-Path $repoDir 'plugins') -Directory | ForEach-Object {
   }
 }
 
+# Agentes do Codex (~/.codex/agents) - mesma politica nao destrutiva
+$agentsDir = if ($env:CODEX_AGENTS_DIR) { $env:CODEX_AGENTS_DIR } else { Join-Path $HOME (Join-Path ".codex" "agents") }
+New-Item -ItemType Directory -Force -Path $agentsDir | Out-Null
+$agents = 0
+$agentSource = Join-Path $repoDir (Join-Path "codex" "agents")
+if (Test-Path $agentSource) {
+  Get-ChildItem -Path $agentSource -Filter *.toml | ForEach-Object {
+    $target = Join-Path $agentsDir $_.Name
+    if (Test-Path $target) {
+      $item = Get-Item $target -Force
+      if ($item.LinkType -ne 'SymbolicLink' -and -not $Force) {
+        Write-Host "  ! $($_.Name) ja existe como ficheiro real - nao tocado (-Force para substituir)"
+        return
+      }
+      Remove-Item $target -Force
+    }
+    Copy-Item $_.FullName $target
+    $script:agents++
+  }
+}
+
 Write-Host "finhub-context: $linked skills ligadas em $skillsDir"
+if ($agents -gt 0) { Write-Host "finhub-context: $agents agentes copiados para $agentsDir" }
 if ($skipped -gt 0) { Write-Host "finhub-context: $skipped ignoradas por conflito" }

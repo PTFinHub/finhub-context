@@ -10,10 +10,13 @@ a este repo à sua maneira.
 
 | Plugin | Skills |
 |---|---|
-| `finhub-core` | `caveman`, `typescript-advanced-types` |
+| `finhub-core` | `caveman`, `caveman-commit`, `caveman-review`, `caveman-compress`, `typescript-advanced-types` |
 | `finhub-web` | `accessibility`, `frontend-design`, `playwright-best-practices`, `seo`, `shadcn`, `tailwind-css-patterns`, `tailwind-v4-shadcn`, `vercel-composition-patterns`, `vercel-react-best-practices`, `vite`, `vitest` |
 | `finhub-api` | `nodejs-backend-patterns`, `nodejs-best-practices`, `nodejs-express-server` |
 | `finhub-workflow` | comandos `/novo-lote` e `/fecha-lote` |
+
+Fora dos plugins, `codex/agents/` guarda os sub-agentes do Codex (ficheiros `.toml`), ligados
+a `~/.codex/agents` pelo mesmo installer.
 
 Formato `SKILL.md`, lido por Claude Code, Codex e restantes agentes compatíveis.
 
