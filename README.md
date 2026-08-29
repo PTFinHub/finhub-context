@@ -80,6 +80,19 @@ bash "$HOME/.finhub-context/scripts/install-codex-skills.sh"
 
 Vem do `.claude/settings.json` do repo clonado. Nada a fazer.
 
+## Validacao
+
+```bash
+node scripts/validate.mjs
+```
+
+Corre no CI a cada PR (`.github/workflows/validate.yml`): catalogo e manifestos coerentes,
+cada `SKILL.md` com `name` e `description` no frontmatter, markdown em LF. Uma skill sem
+`description` nunca auto-activa por intencao — passa a existir sem nunca ser usada.
+
+Este repo alimenta todas as maquinas e CLIs: um erro aqui chega a todos no proximo pull.
+Por isso nada entra sem passar no CI, e o merge e humano.
+
 ## Regras
 
 - **Uma skill vive num sítio só** — aqui. Não voltar a copiar para `.claude/skills` ou

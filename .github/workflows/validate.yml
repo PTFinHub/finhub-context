@@ -1,0 +1,31 @@
+name: validate
+
+# Rede de seguranca do catalogo partilhado. Este repo alimenta todas as maquinas
+# e todos os CLIs: um erro aqui propaga-se a todos no proximo pull, por isso
+# nenhuma alteracao entra sem passar por aqui.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Validar catalogo, manifestos e frontmatter das skills
+        run: node scripts/validate.mjs
+
+      - name: Confirmar LF em todo o markdown
+        run: |
+          if grep -rlIU $'\r' --include='*.md' .; then
+            echo "::error::Ficheiros .md com CRLF. O .gitattributes forca LF — renormalizar antes do merge."
+            exit 1
+          fi
+          echo "markdown em LF"
