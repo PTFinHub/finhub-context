@@ -114,8 +114,9 @@ em Windows**. O Codex — que é quem mais aplica — depende da regra escrita.
 > passam. A diferença entre os repos é a visibilidade, o que aponta para minutos ou limite de
 > gastos de Actions esgotados na org (não consegui ler o billing — precisa de `admin:org`).
 >
-> Enquanto isso não for resolvido, **a rede que devia apanhar o Codex não existe**. A mitigação
-> possível é o hook `pre-commit` do git, que corre na máquina independentemente do GitHub.
+> **Decisão de 2026-08-29: não se paga Actions.** O CI não é, nem será, a rede nos repos de código.
+> O que resta: o hook `PreToolUse` no Claude, a regra escrita no Codex, o `pre-commit` do frontend,
+> e o Qodo mais a revisão humana no PR. Escrito para ninguém voltar a contar com o CI.
 
 ---
 
@@ -185,12 +186,12 @@ Lista o que existe localmente e não está no repo, o que diverge, e o que falta
 
 | Ponto fraco | Impacto | Estado |
 |---|---|---|
-| **GitHub Actions não corre nos repos privados** | o CI que servia de rede para o Codex não existe na prática | **bloqueante** — verificar minutos/limite de gastos de Actions da org |
+| ~~GitHub Actions nos repos privados~~ | **decidido: não se paga.** O CI nunca será a rede nos repos de código | fechado por decisão — a revisão é o Qodo mais o review humano |
 | Codex sem travão em sessão (Windows) | regra escrita, não garantida | limitação da ferramenta — reavaliar quando os hooks saírem de experimental |
-| Backend sem `pre-commit` | a guarda local só existe no frontend, que tem husky | adicionar husky ao backend ou aceitar |
+| ~~Backend sem `pre-commit`~~ | **decidido: aceite.** O Qodo faz a revisão nos PRs | fechado por decisão |
 | Dois `TASKS.md` a contradizerem-se | frontend diz `BUD-FEM-05` (2026-07-28), overlay do backend diz outra coisa (2026-08-27) | **precisa de decisão: qual é canónico** |
 | `~/.codex/config.toml` não distribuído | modelo e reasoning effort do Codex podem diferir entre máquinas; o do Claude já vem do repo | por resolver |
-| `browser-automation` e `taste-skill` sem licença | não podem entrar num repo público | por resolver: confirmar origem |
+| ~~`browser-automation` e `taste-skill` sem licença~~ | resolvido: `taste-skill` declarada de `tasteskill/tasteskill` (MIT); `browser-automation` reescrita por nós | fechado |
 | Memória é por repo, não cross-repo | o que o Claude aprende no frontend não chega ao backend | por avaliar |
 | `main` do backend com 2 erros de typecheck | gate vermelho antes de qualquer alteração | pré-existente |
 | Portátil por auditar | pode ter skills e agentes só locais | correr `audit-local.mjs` lá |
