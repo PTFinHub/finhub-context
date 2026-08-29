@@ -27,7 +27,7 @@
       "name": "finhub-workflow",
       "source": "./plugins/finhub-workflow",
       "description": "Comandos de lote partilhados: /novo-lote e /fecha-lote.",
-      "version": "1.0.0"
+      "version": "1.1.0"
     }
   ],
   "metadata": {
