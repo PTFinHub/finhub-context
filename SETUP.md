@@ -86,6 +86,7 @@ node scripts/audit-local.mjs    # o que existe nesta máquina e não no repo
 node scripts/validate.mjs       # o catálogo em si
 node scripts/fingerprint.mjs    # o resumo comparável entre máquinas
 node scripts/install-skills.mjs # skills de terceiros declaradas
+node scripts/drift.mjs          # instantâneo: o instalado corresponde ao repo?
 ```
 
 Nenhum destes altera nada.
@@ -109,7 +110,8 @@ fora — senão nunca haveria dois iguais.
 
 ## Quando voltar a correr
 
-- **Sempre que houver novidades no repo de contexto** — skill nova, regra alterada, comando novo
+- **Sempre que houver novidades no repo de contexto** — skill nova, regra alterada, comando novo.
+  Nos repos de código o hook `SessionStart` avisa-te sozinho; dentro da sessão basta `/cerebro`
 - Ao mudar de máquina depois de um tempo sem lá tocar
 - Quando um agente se portar de forma diferente numa máquina e não souberes porquê
 

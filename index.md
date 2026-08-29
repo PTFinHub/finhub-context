@@ -101,6 +101,23 @@ recebem a alteração — falha que parece sucesso.
 
 ---
 
+## `/cerebro`
+
+Dentro de uma sessão, em vez de decorar caminhos:
+
+```
+/cerebro
+```
+
+Existe como comando no Claude e como skill com o mesmo nome no Codex. Verifica, mostra o que está
+fora do sítio, e **pergunta antes de aplicar**. O que nunca aplica sozinho — memória, `config.toml`,
+ficheiros alterados à mão — vem listado com o motivo.
+
+Nos repos de código, o hook `SessionStart` corre a mesma verificação sozinho e avisa logo na
+primeira linha da sessão. São 225 ms, sem rede.
+
+---
+
 ## Verificar
 
 ```bash
@@ -109,6 +126,7 @@ node scripts/check-plugins.mjs  # só o baseline de plugins, por CLI
 node scripts/audit-local.mjs    # o que existe nesta máquina e não no repo
 node scripts/validate.mjs       # o catálogo em si (corre também no CI)
 node scripts/fingerprint.mjs    # resumo comparável: duas máquinas iguais dão o mesmo
+node scripts/drift.mjs          # instantâneo: o instalado ainda corresponde ao repo?
 ```
 
 O `setup.mjs` sai com código 1 se faltar um passo automático — serve como gate.
