@@ -117,6 +117,17 @@ if (!fs.existsSync(pluginsDir)) {
       if (r.status !== 0) failed.push(p.name);
     }
 
+    // Instalar o que falta nao chega: o cache e indexado pela versao, e um plugin
+    // ja instalado fica na versao antiga para sempre se ninguem lhe mandar actualizar.
+    // Sem isto, duas maquinas com o mesmo repo servem conteudos diferentes.
+    const updated = [];
+    for (const key of Object.keys((installed && installed.plugins) || {})) {
+      if (!key.endsWith('@finhub')) continue;
+      const r = run('claude', ['plugin', 'update', key]);
+      if ((r.stdout || '').includes('updated from')) updated.push(key.split('@')[0]);
+    }
+    if (updated.length) human('plugins claude', `actualizados: ${updated.join(', ')}`, 'reiniciar a sessao para as alteracoes entrarem');
+
     const after = readJson(path.join(pluginsDir, 'known_marketplaces.json')) || {};
     if (!after.finhub) {
       todo('claude', 'marketplace continua por registar', 'confirmar que o CLI `claude` esta no PATH');
