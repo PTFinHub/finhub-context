@@ -9,7 +9,7 @@
       "name": "finhub-core",
       "source": "./plugins/finhub-core",
       "description": "Skills partilhadas por todos os repos FinHub: modo de resposta caveman e TypeScript avancado.",
-      "version": "1.1.0"
+      "version": "1.2.0"
     },
     {
       "name": "finhub-web",

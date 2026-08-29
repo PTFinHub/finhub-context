@@ -8,6 +8,7 @@ Cópias literais de [`juliusbrussee/caveman`](https://github.com/juliusbrussee/c
 | `caveman-commit` | `skills/caveman-commit` |
 | `caveman-review` | `skills/caveman-review` |
 | `caveman-compress` | `skills/caveman-compress` (inclui `scripts/`) |
+| `../../hooks/caveman-activate.js` | hook `SessionStart` do plugin upstream |
 
 ## Licença
 
@@ -17,6 +18,16 @@ O `LICENSE` do upstream é **MIT para todo o repo excepto** os directórios liga
 
 `skills/` não está nessa lista — os quatro ficheiros acima são **MIT**, incluindo os scripts
 Python do `caveman-compress`. Redistribuição aqui mantém a atribuição.
+
+## Porque distribuimos nos, e nao o plugin upstream
+
+O plugin `caveman@caveman` faria o mesmo trabalho, mas seria um **segundo canal de distribuicao**
+a chegar as maquinas — skills duplicadas no Claude (`caveman:caveman` e `finhub-core:caveman`) e
+duas fontes a manter. Este repo e a fonte unica; o upstream e de onde o conteudo vem, nao por onde
+ele chega.
+
+Por isso o `finhub-core` declara ele proprio o hook `SessionStart` que activa o modo caveman em
+todas as sessoes do Claude. O ficheiro do hook e copia literal do upstream (MIT, `hooks/LICENSE`).
 
 ## Manter verbatim
 

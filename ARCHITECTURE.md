@@ -17,6 +17,11 @@ a realidade ganha e este ficheiro corrige-se no mesmo ciclo.
 | `PTFinHub/FinhubFront` | privado | código do frontend, `AGENTS.md`, `dcos/finhub/**`, memória |
 | `PTFinHub/Finhub_Back` | privado | código do backend, `AGENTS.md`, `dcos/finhub/**`, memória |
 
+**Uma fonte, um canal.** Tudo o que os agentes partilham chega pelo `finhub-context` — mesmo o que
+nasce noutro projecto open-source. Quando adoptamos algo de fora (skills, hooks), copiamos para cá
+com a proveniência registada em `SOURCE.md`, em vez de instalar o marketplace do autor a par do
+nosso. Dois canais dariam skills duplicadas e duas fontes a manter.
+
 O `finhub-context` é público **por necessidade técnica**: o Claude Code não consegue autenticar-se
 no GitHub para clonar repos privados, e o clone anónimo elimina o problema em todas as máquinas.
 Por isso só entram lá padrões genéricos — Tailwind, Vite, Playwright. O contexto de negócio fica
@@ -93,7 +98,7 @@ específico do Claude. Duplicar factos entre os dois é o que os fez divergir no
 | Skills | marketplace → cache | `~/.codex/skills` (links) |
 | Comandos de lote | plugin `finhub-workflow` | — |
 | Memória | `autoMemoryDirectory` → repo | por regra escrita |
-| Caveman sempre activo | hook `SessionStart` do plugin `caveman@caveman` | `~/.codex/AGENTS.md` distribuído |
+| Caveman sempre activo | hook `SessionStart` do `finhub-core` | `~/.codex/AGENTS.md` distribuído |
 | Modelo e effort | `.claude/settings.json` do repo (`opus` / `high`) | `~/.codex/config.toml` — **por máquina** |
 | **Travão em sessão** | **hook `PreToolUse`** | **nenhum** |
 | Travão antes do commit | hook + `pre-commit` | `pre-commit` (só no frontend) |
