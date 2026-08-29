@@ -1,5 +1,12 @@
-# Instala as skills do finhub-context em ~/.codex/skills (Windows).
-# Idempotente. Uso: powershell -ExecutionPolicy Bypass -File scripts/install-codex-skills.ps1
+# Liga as skills do finhub-context a ~/.codex/skills (Windows).
+# Idempotente e nao destrutivo: nunca apaga uma pasta real que ja exista la.
+#
+# Uso: powershell -ExecutionPolicy Bypass -File scripts/install-codex-skills.ps1
+#
+# -Force substitui pastas reais em conflito. So usar depois de confirmar que nao
+# ha conteudo unico a perder.
+param([switch]$Force)
+
 $ErrorActionPreference = 'Stop'
 
 $repoUrl   = if ($env:FINHUB_CONTEXT_URL) { $env:FINHUB_CONTEXT_URL } else { 'https://github.com/PTFinHub/finhub-context.git' }
@@ -14,17 +21,30 @@ if (Test-Path (Join-Path $repoDir '.git')) {
 
 New-Item -ItemType Directory -Force -Path $skillsDir | Out-Null
 
-$count = 0
+$linked  = 0
+$skipped = 0
+
 Get-ChildItem -Path (Join-Path $repoDir 'plugins') -Directory | ForEach-Object {
   $skillRoot = Join-Path $_.FullName 'skills'
   if (-not (Test-Path $skillRoot)) { return }
+
   Get-ChildItem -Path $skillRoot -Directory | ForEach-Object {
     $link = Join-Path $skillsDir $_.Name
-    if (Test-Path $link) { Remove-Item $link -Recurse -Force }
+    if (Test-Path $link) {
+      $item = Get-Item $link -Force
+      $isLink = $item.LinkType -in @('Junction', 'SymbolicLink')
+      if (-not $isLink -and -not $Force) {
+        Write-Host "  ! $($_.Name) ja existe como pasta real - nao tocado (-Force para substituir)"
+        $script:skipped++
+        return
+      }
+      Remove-Item $link -Recurse -Force
+    }
     # Junction nao precisa de privilegios de administrador
     New-Item -ItemType Junction -Path $link -Target $_.FullName | Out-Null
-    $script:count++
+    $script:linked++
   }
 }
 
-Write-Host "finhub-context: $count skills ligadas em $skillsDir"
+Write-Host "finhub-context: $linked skills ligadas em $skillsDir"
+if ($skipped -gt 0) { Write-Host "finhub-context: $skipped ignoradas por conflito" }
