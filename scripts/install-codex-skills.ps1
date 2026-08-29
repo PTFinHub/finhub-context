@@ -10,13 +10,17 @@ param([switch]$Force)
 $ErrorActionPreference = 'Stop'
 
 $repoUrl   = if ($env:FINHUB_CONTEXT_URL) { $env:FINHUB_CONTEXT_URL } else { 'https://github.com/PTFinHub/finhub-context.git' }
-$repoDir   = if ($env:FINHUB_CONTEXT_DIR) { $env:FINHUB_CONTEXT_DIR } else { Join-Path $HOME '.finhub-context' }
+# A origem e o repo onde este script vive, nao um caminho fixo na home. Fixa-lo criava
+# um segundo clone: os links apontavam para ~/.finhub-context enquanto se actualizava
+# outro clone noutro sitio, e as skills ficavam presas numa versao antiga.
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$repoDir   = if ($env:FINHUB_CONTEXT_DIR) { $env:FINHUB_CONTEXT_DIR } else { (Resolve-Path (Join-Path $scriptDir '..')).Path }
 $skillsDir = if ($env:CODEX_SKILLS_DIR)   { $env:CODEX_SKILLS_DIR }   else { Join-Path $HOME '.codex\skills' }
 
 if (Test-Path (Join-Path $repoDir '.git')) {
   git -C $repoDir pull --ff-only
 } else {
-  git clone --depth 1 $repoUrl $repoDir
+  Write-Host "  ! $repoDir nao e um repo git - a usar tal como esta"
 }
 
 New-Item -ItemType Directory -Force -Path $skillsDir | Out-Null

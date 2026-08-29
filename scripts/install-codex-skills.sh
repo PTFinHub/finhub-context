@@ -10,14 +10,18 @@
 set -euo pipefail
 
 REPO_URL="${FINHUB_CONTEXT_URL:-https://github.com/PTFinHub/finhub-context.git}"
-REPO_DIR="${FINHUB_CONTEXT_DIR:-$HOME/.finhub-context}"
+# A origem e o repo onde este script vive, nao um caminho fixo na home. Fixa-lo criava
+# um segundo clone: os links apontavam para ~/.finhub-context enquanto se actualizava
+# outro clone noutro sitio, e as skills ficavam presas numa versao antiga.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+REPO_DIR="${FINHUB_CONTEXT_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}"
 SKILLS_DIR="${CODEX_SKILLS_DIR:-$HOME/.codex/skills}"
 FORCE="${FINHUB_FORCE:-0}"
 
 if [ -d "$REPO_DIR/.git" ]; then
   git -C "$REPO_DIR" pull --ff-only
 else
-  git clone --depth 1 "$REPO_URL" "$REPO_DIR"
+  echo "  ! $REPO_DIR nao e um repo git — a usar tal como esta"
 fi
 
 mkdir -p "$SKILLS_DIR"
