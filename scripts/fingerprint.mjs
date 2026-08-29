@@ -79,7 +79,30 @@ const codexSkillHash = mine
   .map((name) => `${name}:${sha(readText(path.join(codexSkillsDir, name, 'SKILL.md')) || '')}`)
   .join('|');
 add('skills-finhub', mine.length ? sha(codexSkillHash) : 'nenhuma', `${mine.length} de ${ourSkills.size} distribuidas por este repo`);
-add('skills-extra', String(extra.length), extra.length ? `fora do repo: ${extra.slice(0, 6).join(', ')}${extra.length > 6 ? '…' : ''}` : '—');
+
+// Skills de terceiros declaradas em skills.json entram no resumo: sao obrigatorias e
+// fixadas num commit. Se uma faltar, a maquina comporta-se de forma diferente — deixa-las
+// de fora era o mesmo erro que ter a personality fora do hash.
+const declared = (readJson(path.join(repoRoot, 'skills.json')) || { skills: [] }).skills;
+const declaredState = declared
+  .map((d) => {
+    const local = [path.join(home, '.codex', 'skills', d.name, 'SKILL.md'), path.join(home, '.claude', 'skills', d.name, 'SKILL.md')]
+      .map(readText)
+      .find(Boolean);
+    return `${d.name}@${d.ref.slice(0, 7)}:${local ? sha(local) : 'ausente'}`;
+  })
+  .sort();
+const missingDeclared = declaredState.filter((x) => x.endsWith(':ausente')).length;
+add(
+  'skills-declaradas',
+  declared.length ? sha(declaredState.join('|')) : 'nenhuma',
+  `${declared.length - missingDeclared} de ${declared.length} presentes${missingDeclared ? ' — EM FALTA: ' + declaredState.filter((x) => x.endsWith(':ausente')).map((x) => x.split('@')[0]).join(', ') : ''}`
+);
+
+// Fora do resumo ficam so as que nao declaramos nem distribuimos: biblioteca da maquina.
+const declaredNames = new Set(declared.map((d) => d.name));
+const trulyExtra = extra.filter((n) => !declaredNames.has(n));
+add('skills-extra', String(trulyExtra.length), trulyExtra.length ? `so nesta maquina: ${trulyExtra.slice(0, 6).join(', ')}${trulyExtra.length > 6 ? '…' : ''}` : '—');
 
 // 4. Agentes do Codex
 const codexAgents = (() => {
@@ -112,7 +135,7 @@ add('modelo-codex', `${pick('model')}/${pick('model_reasoning_effort')}/${pick('
 
 // Só as partes que TÊM de bater certo entre máquinas entram no resumo combinado.
 // O modelo do Codex entra: effort diferente muda respostas com as mesmas regras.
-const comparable = ['contexto', 'regras-codex', 'skills-finhub', 'plugins-finhub', 'modelo-claude', 'modelo-codex'];
+const comparable = ['contexto', 'regras-codex', 'skills-finhub', 'skills-declaradas', 'plugins-finhub', 'modelo-claude', 'modelo-codex'];
 const combined = sha(parts.filter((p) => comparable.includes(p.name)).map((p) => `${p.name}=${p.value}`).join('\n'));
 
 const w = Math.max(...parts.map((p) => p.name.length));
