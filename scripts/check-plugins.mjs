@@ -9,9 +9,13 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const home = os.homedir();
-const manifest = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'plugins.json'), 'utf8'));
+// A raiz vem da localizacao deste ficheiro, nao do cwd: o clone pode estar em qualquer caminho
+// (no desktop em ~/.finhub-context, no Dell em Documents/GitHub/finhub-context).
+const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const manifest = JSON.parse(fs.readFileSync(path.join(repoRoot, 'plugins.json'), 'utf8'));
 
 const read = (file) => {
   try {
@@ -38,6 +42,25 @@ const claudeAvailable = installed !== null;
 
 // ---------- Codex ----------
 
+// O binario chama-se codex.exe mas vem com a app ChatGPT e nao fica no PATH; a pasta bin tem um
+// hash que muda a cada actualizacao, por isso procura-se em vez de se fixar o caminho.
+function findCodexBinary() {
+  const roots = [
+    path.join(home, 'AppData', 'Local', 'OpenAI', 'Codex', 'bin'),
+    path.join(home, '.local', 'share', 'openai', 'codex', 'bin'),
+  ];
+  for (const root of roots) {
+    for (const sub of dirs(root)) {
+      for (const exe of ['codex.exe', 'codex']) {
+        const candidate = path.join(root, sub, exe);
+        if (fs.existsSync(candidate)) return candidate;
+      }
+    }
+  }
+  return null;
+}
+
+const codexBinary = findCodexBinary();
 const codexCache = path.join(home, '.codex', 'plugins', 'cache');
 const codexAvailable = fs.existsSync(codexCache);
 const codexHas = new Map(); // nome -> versao
@@ -99,12 +122,15 @@ if (missing.claude.length) {
 }
 
 if (missing.codex.length) {
-  console.log('\nCodex — instalar do canal curated:');
-  for (const p of missing.codex) console.log(`  ${p.name}  (canal ${p.channel})`);
-  console.log(
-    '  O comando exacto vem do plugin `plugin-management`; no Codex, pedir "instala o plugin <nome>".\n' +
-      '  Se `plugin-management` for o que falta, instalar pela interface de plugins do Codex primeiro.'
-  );
+  const codex = codexBinary ? `"${codexBinary}"` : 'codex';
+  console.log('\nCodex — correr:');
+  for (const p of missing.codex) console.log(`  ${codex} plugin add ${p.name}@${p.channel}`);
+  if (!codexBinary) {
+    console.log(
+      '  (binario nao encontrado — vem com a app ChatGPT, em\n' +
+        '   %LOCALAPPDATA%\\OpenAI\\Codex\\bin\\<hash>\\codex.exe, e nao fica no PATH)'
+    );
+  }
 }
 
 const total = missing.claude.length + missing.codex.length;

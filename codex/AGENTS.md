@@ -50,7 +50,7 @@ CLIs e os outros PCs nunca o vêem. Descoberta útil → PR no `finhub-context`.
 Actualizar esta máquina:
 
 ```bash
-bash ~/.finhub-context/scripts/install-codex-skills.sh
+bash <repo>/scripts/install-codex-skills.sh
 ```
 
 ---
@@ -97,7 +97,19 @@ têm disponível.
 o agente simplesmente não faz aquilo, e a diferença entre máquinas parece inconsistência do modelo.
 
 ```bash
-node ~/.finhub-context/scripts/check-plugins.mjs
+node <repo>/scripts/check-plugins.mjs
+```
+
+`<repo>` e o clone do `finhub-context` nesta maquina — nao ha caminho canonico: no desktop esta
+em `~/.finhub-context`, no Dell em `Documents/GitHub/finhub-context`. Os scripts resolvem a raiz
+pela sua propria localizacao, por isso funcionam de qualquer cwd.
+
+O binario do Codex vem com a app ChatGPT e **nao fica no PATH** — esta em
+`%LOCALAPPDATA%\OpenAI\Codexin\<hash>\codex.exe`, com um hash que muda a cada actualizacao.
+O `check-plugins.mjs` procura-o e imprime o comando ja com o caminho certo:
+
+```
+codex plugin add <plugin>@<canal>
 ```
 
 Lista o que falta e imprime o comando de instalação por CLI. Sai com código 1 se faltar algum

@@ -138,7 +138,7 @@ claude plugin install finhub-core@finhub
 
 ```bash
 git clone https://github.com/PTFinHub/finhub-context.git ~/.finhub-context
-bash ~/.finhub-context/scripts/install-codex-skills.sh
+bash <repo>/scripts/install-codex-skills.sh
 ```
 
 **Memória** — em cada repo, `.claude/settings.local.json`:
@@ -153,8 +153,8 @@ no `settings.json` versionado, por segurança.
 **Auditar antes de assumir que está alinhado:**
 
 ```bash
-node ~/.finhub-context/scripts/audit-local.mjs    # skills, agentes, regras
-node ~/.finhub-context/scripts/check-plugins.mjs  # baseline de plugins por CLI
+node <repo>/scripts/audit-local.mjs    # skills, agentes, regras
+node <repo>/scripts/check-plugins.mjs  # baseline de plugins por CLI
 ```
 
 Lista o que existe localmente e não está no repo, o que diverge, e o que falta.

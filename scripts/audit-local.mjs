@@ -12,9 +12,11 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { fileURLToPath } from 'node:url';
 
 const home = os.homedir();
-const root = process.cwd();
+// A raiz vem da localizacao deste ficheiro, nao do cwd — o clone pode estar em qualquer caminho.
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 const hash = (file) => {
   try {
