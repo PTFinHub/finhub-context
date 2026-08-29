@@ -1,0 +1,6 @@
+{
+  "name": "finhub-api",
+  "description": "Skills de backend para o Finhub_Back (Node.js + Express + MongoDB).",
+  "version": "1.0.0",
+  "author": { "name": "PTFinHub" }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "finhub",
+  "owner": {
+    "name": "PTFinHub",
+    "email": "joaomcf37@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "finhub-core",
+      "source": "./plugins/finhub-core",
+      "description": "Skills partilhadas por todos os repos FinHub: modo de resposta caveman e TypeScript avancado.",
+      "version": "1.0.0"
+    },
+    {
+      "name": "finhub-web",
+      "source": "./plugins/finhub-web",
+      "description": "Skills de frontend: React, Vite, Vitest, Tailwind, shadcn/ui, Playwright, acessibilidade e SEO.",
+      "version": "1.0.0"
+    },
+    {
+      "name": "finhub-api",
+      "source": "./plugins/finhub-api",
+      "description": "Skills de backend Node.js: padroes Express, boas praticas e estrutura de servidor.",
+      "version": "1.0.0"
+    }
+  ]
+}
