@@ -68,6 +68,7 @@ se não puder sair dela.**
 | Skills | `finhub-context` | marketplace (Claude) · installer (Codex) |
 | `/novo-lote`, `/fecha-lote` | `finhub-context` | marketplace |
 | Agentes do Codex | `finhub-context` → `codex/agents/` | installer |
+| Regras universais (caveman, contexto partilhado) | `finhub-context` → `codex/AGENTS.md` | installer → `~/.codex/AGENTS.md` |
 | `/gates`, `/report` | `.claude/commands/` do repo | git clone |
 | Regras do projecto | `AGENTS.md` do repo | git clone |
 | Estado do lote | `dcos/finhub/TASKS.md` | git clone |
@@ -92,6 +93,8 @@ específico do Claude. Duplicar factos entre os dois é o que os fez divergir no
 | Skills | marketplace → cache | `~/.codex/skills` (links) |
 | Comandos de lote | plugin `finhub-workflow` | — |
 | Memória | `autoMemoryDirectory` → repo | por regra escrita |
+| Caveman sempre activo | hook `SessionStart` do plugin `caveman@caveman` | `~/.codex/AGENTS.md` distribuído |
+| Modelo e effort | `.claude/settings.json` do repo (`opus` / `high`) | `~/.codex/config.toml` — **por máquina** |
 | **Travão em sessão** | **hook `PreToolUse`** | **nenhum** |
 | Travão antes do commit | hook + `pre-commit` | `pre-commit` (só no frontend) |
 | Travão antes do merge | CI — **não corre** | CI — **não corre** |
@@ -173,7 +176,7 @@ Lista o que existe localmente e não está no repo, o que diverge, e o que falta
 | Codex sem travão em sessão (Windows) | regra escrita, não garantida | limitação da ferramenta — reavaliar quando os hooks saírem de experimental |
 | Backend sem `pre-commit` | a guarda local só existe no frontend, que tem husky | adicionar husky ao backend ou aceitar |
 | Dois `TASKS.md` a contradizerem-se | frontend diz `BUD-FEM-05` (2026-07-28), overlay do backend diz outra coisa (2026-08-27) | **precisa de decisão: qual é canónico** |
-| `~/.claude/settings.json` e `~/.codex/config.toml` não distribuídos | modelo, effort e preferências podem diferir entre máquinas | por resolver |
+| `~/.codex/config.toml` não distribuído | modelo e reasoning effort do Codex podem diferir entre máquinas; o do Claude já vem do repo | por resolver |
 | `browser-automation` e `taste-skill` sem licença | não podem entrar num repo público | por resolver: confirmar origem |
 | Memória é por repo, não cross-repo | o que o Claude aprende no frontend não chega ao backend | por avaliar |
 | `main` do backend com 2 erros de typecheck | gate vermelho antes de qualquer alteração | pré-existente |

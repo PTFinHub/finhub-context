@@ -15,8 +15,11 @@ a este repo à sua maneira.
 | `finhub-api` | `nodejs-backend-patterns`, `nodejs-best-practices`, `nodejs-express-server` |
 | `finhub-workflow` | comandos `/novo-lote` e `/fecha-lote` |
 
-Fora dos plugins, `codex/agents/` guarda os sub-agentes do Codex (ficheiros `.toml`), ligados
-a `~/.codex/agents` pelo mesmo installer.
+Fora dos plugins:
+
+- `codex/AGENTS.md` — regras universais que se aplicam a **todas** as sessões do Codex, em
+  qualquer projecto. Ligado a `~/.codex/AGENTS.md` pelo installer.
+- `codex/agents/` — sub-agentes do Codex (`.toml`), ligados a `~/.codex/agents`.
 
 Formato `SKILL.md`, lido por Claude Code, Codex e restantes agentes compatíveis.
 

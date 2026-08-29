@@ -67,6 +67,22 @@ if (Test-Path $agentSource) {
   }
 }
 
+# Regras universais do Codex (~/.codex/AGENTS.md) - mesma politica nao destrutiva
+$codexHome = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $HOME ".codex" }
+$globalRules = Join-Path $repoDir (Join-Path "codex" "AGENTS.md")
+$targetRules = Join-Path $codexHome "AGENTS.md"
+if (Test-Path $globalRules) {
+  New-Item -ItemType Directory -Force -Path $codexHome | Out-Null
+  $hasOwn = (Test-Path $targetRules) -and ((Get-Item $targetRules).Length -gt 0) -and ((Get-Item $targetRules -Force).LinkType -eq $null)
+  if ($hasOwn -and -not $Force) {
+    Write-Host "  ! ~/.codex/AGENTS.md tem conteudo proprio - nao tocado (-Force para substituir)"
+  } else {
+    if (Test-Path $targetRules) { Remove-Item $targetRules -Force }
+    Copy-Item $globalRules $targetRules
+    Write-Host "finhub-context: regras universais copiadas para $targetRules"
+  }
+}
+
 Write-Host "finhub-context: $linked skills ligadas em $skillsDir"
 if ($agents -gt 0) { Write-Host "finhub-context: $agents agentes copiados para $agentsDir" }
 if ($skipped -gt 0) { Write-Host "finhub-context: $skipped ignoradas por conflito" }

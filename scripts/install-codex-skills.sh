@@ -56,6 +56,21 @@ for agent in "$REPO_DIR"/codex/agents/*.toml; do
   agents=$((agents + 1))
 done
 
+# Regras universais do Codex (~/.codex/AGENTS.md) — mesma politica nao destrutiva
+CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
+global_rules="$REPO_DIR/codex/AGENTS.md"
+target_rules="$CODEX_HOME/AGENTS.md"
+if [ -f "$global_rules" ]; then
+  mkdir -p "$CODEX_HOME"
+  if [ -s "$target_rules" ] && [ ! -L "$target_rules" ] && [ "$FORCE" != "1" ]; then
+    echo "  ! ~/.codex/AGENTS.md tem conteudo proprio — nao tocado (FINHUB_FORCE=1 para substituir)"
+  else
+    rm -f "$target_rules"
+    ln -s "$global_rules" "$target_rules"
+    echo "finhub-context: regras universais ligadas em $target_rules"
+  fi
+fi
+
 echo "finhub-context: $linked skills ligadas em $SKILLS_DIR"
 [ "$agents" -gt 0 ] && echo "finhub-context: $agents agentes ligados em $AGENTS_DIR"
 [ "$skipped" -gt 0 ] && echo "finhub-context: $skipped ignoradas por conflito"
