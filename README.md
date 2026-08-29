@@ -31,23 +31,9 @@ chamam o `/gates` local — por isso vivem aqui e servem qualquer repo.
 
 ## Como cada superfície se liga
 
-### Máquina nova — um comando, uma vez
-
-O Claude Code monta o URL do marketplace em SSH. Se a máquina não tiver chave SSH registada
-no GitHub, o `git clone` falha com `Permission denied (publickey)`. Reescrever para HTTPS
-resolve de vez, e vale para qualquer repo GitHub:
-
-```bash
-git config --global url."https://github.com/".insteadOf "git@github.com:"
-```
-
-Reverter: `git config --global --unset url."https://github.com/".insteadOf`
-
-Alternativa pontual, sem mexer na config — passar o URL HTTPS explícito:
-
-```
-/plugin marketplace add https://github.com/PTFinHub/finhub-context.git
-```
+> Este repo é **público**. Não é preciso SSH, token nem credential helper em máquina nenhuma —
+> o clone é anónimo. Foi essa a razão de o tornar público: os repos de código continuam
+> privados, e aqui só vivem padrões de Tailwind, Vite, Playwright e afins.
 
 ### Claude Code — automático, zero setup
 
@@ -58,7 +44,11 @@ Já está declarado no `.claude/settings.json` do `FinhubFront` e do `Finhub_Bac
   "extraKnownMarketplaces": {
     "finhub": { "source": { "source": "github", "repo": "PTFinHub/finhub-context" } }
   },
-  "enabledPlugins": { "finhub-core@finhub": true, "finhub-web@finhub": true }
+  "enabledPlugins": {
+    "finhub-core@finhub": true,
+    "finhub-web@finhub": true,
+    "finhub-workflow@finhub": true
+  }
 }
 ```
 
