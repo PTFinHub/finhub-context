@@ -46,6 +46,18 @@ const list = (dir) => {
   }
 };
 
+// Skills de terceiros declaradas em skills.json: nao vivem em plugins/, mas sao
+// conhecidas e obrigatorias. Sem isto apareciam como "SO LOCAL" e mandavam decidir
+// algo que ja esta decidido.
+const declared = new Map();
+try {
+  for (const d of JSON.parse(fs.readFileSync(path.join(root, 'skills.json'), 'utf8')).skills) {
+    declared.set(d.name, `${d.repo}@${d.ref.slice(0, 7)}`);
+  }
+} catch {
+  // sem skills.json: nada declarado
+}
+
 // Catalogo: nome da skill -> caminho do SKILL.md neste repo
 const catalog = new Map();
 for (const plugin of list(path.join(root, 'plugins'))) {
@@ -64,6 +76,10 @@ function auditSkills(label, dir) {
     const local = path.join(dir, name, 'SKILL.md');
     if (!fs.existsSync(local)) continue;
 
+    if (declared.has(name)) {
+      rows.push([label, name, 'declarada', `de ${declared.get(name)} — ver skills.json`]);
+      continue;
+    }
     if (!catalog.has(name)) {
       rows.push([label, name, 'SO LOCAL', 'nao existe no repo — avaliar se deve subir']);
       continue;
@@ -115,7 +131,7 @@ for (const row of rows.sort((a, b) => a[2].localeCompare(b[2]) || a[1].localeCom
   console.log(`  ${row[0].padEnd(w0)}  ${row[1].padEnd(w1)}  ${row[2].padEnd(w2)}  ${row[3]}`);
 }
 
-const attention = rows.filter((r) => r[2] !== 'ligado' && r[2] !== 'copia igual');
+const attention = rows.filter((r) => !['ligado', 'copia igual', 'declarada'].includes(r[2]));
 console.log(
   `\n${rows.length} itens · ${attention.length} a precisar de decisao\n` +
     (attention.length
