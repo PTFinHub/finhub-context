@@ -64,10 +64,22 @@ const codexSkillsDir = path.join(home, '.codex', 'skills');
 const codexSkills = listDirs(codexSkillsDir).filter(
   (name) => !name.startsWith('.') && fs.existsSync(path.join(codexSkillsDir, name, 'SKILL.md'))
 );
-const codexSkillHash = codexSkills
+
+// So entram no resumo as skills que ESTE repo distribui. Uma maquina pode ter skills
+// de outros plugins — isso e legitimo e nao a torna diferente no que nos controlamos.
+// Sao contadas a parte, como informacao.
+const ourSkills = new Set();
+for (const plugin of listDirs(path.join(repoRoot, 'plugins'))) {
+  for (const skill of listDirs(path.join(repoRoot, 'plugins', plugin, 'skills'))) ourSkills.add(skill);
+}
+const mine = codexSkills.filter((n) => ourSkills.has(n));
+const extra = codexSkills.filter((n) => !ourSkills.has(n));
+
+const codexSkillHash = mine
   .map((name) => `${name}:${sha(readText(path.join(codexSkillsDir, name, 'SKILL.md')) || '')}`)
   .join('|');
-add('skills-codex', codexSkills.length ? sha(codexSkillHash) : 'nenhuma', `${codexSkills.length} skills`);
+add('skills-finhub', mine.length ? sha(codexSkillHash) : 'nenhuma', `${mine.length} de ${ourSkills.size} distribuidas por este repo`);
+add('skills-extra', String(extra.length), extra.length ? `fora do repo: ${extra.slice(0, 6).join(', ')}${extra.length > 6 ? '…' : ''}` : '—');
 
 // 4. Agentes do Codex
 const codexAgents = (() => {
@@ -99,7 +111,7 @@ add('modelo-codex', `${pick('model')}/${pick('model_reasoning_effort')}`, `perso
 
 // Só as partes que TÊM de bater certo entre máquinas entram no resumo combinado.
 // O modelo do Codex entra: effort diferente muda respostas com as mesmas regras.
-const comparable = ['contexto', 'regras-codex', 'skills-codex', 'plugins-finhub', 'modelo-claude', 'modelo-codex'];
+const comparable = ['contexto', 'regras-codex', 'skills-finhub', 'plugins-finhub', 'modelo-claude', 'modelo-codex'];
 const combined = sha(parts.filter((p) => comparable.includes(p.name)).map((p) => `${p.name}=${p.value}`).join('\n'));
 
 const w = Math.max(...parts.map((p) => p.name.length));

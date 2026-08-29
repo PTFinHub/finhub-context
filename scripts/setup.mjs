@@ -26,8 +26,16 @@ const ok = (step, detail) => results.push({ state: 'OK', step, detail });
 const todo = (step, detail, action) => results.push({ state: 'FALTA', step, detail, action });
 const human = (step, detail, action) => results.push({ state: 'HUMANO', step, detail, action });
 
+// Em Windows o CLI pode ser um .exe (spawn directo funciona) ou um shim .cmd/.ps1
+// (spawn directo devolve ENOENT). Tenta-se sem shell e so se recorre a shell quando
+// o binario nao foi encontrado — evita o aviso de deprecacao no caso comum.
 function run(cmd, args, opts = {}) {
-  return spawnSync(cmd, args, { encoding: 'utf8', cwd: repoRoot, ...opts });
+  const base = { encoding: 'utf8', cwd: repoRoot, ...opts };
+  const direct = spawnSync(cmd, args, base);
+  if (direct.error && direct.error.code === 'ENOENT') {
+    return spawnSync(cmd, args, { ...base, shell: true });
+  }
+  return direct;
 }
 
 // ---------- 1. Repo actualizado ----------
