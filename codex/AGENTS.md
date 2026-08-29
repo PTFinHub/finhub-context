@@ -55,6 +55,56 @@ bash ~/.finhub-context/scripts/install-codex-skills.sh
 
 ---
 
+## Como trabalhamos
+
+Regras extraídas da memória local do Codex (`~/.codex/memories/memory_summary.md`), onde só
+existiam nesta máquina. São o método, não preferências de estilo.
+
+**Verificação — nunca confiar em auto-relato.** Confirmar de forma independente o código, o clone
+e a branch seleccionados, os docs, os contratos do backend e evidência **fresca** dos gates.
+Contestar propostas em vez de concordar por defeito. Distinguir três estados que não são o mesmo:
+*implementado*, *código/evidência completos*, *operacionalmente fechado*.
+
+**Git.** Usar a branch existente. Commits pequenos e separados, em Conventional Commits minúsculos.
+Nunca commitar em `main`. Nunca fazer push sem autorização explícita e actual.
+
+**Testes.** TDD com evidência RED/GREEN real — mutação ou regressão — e outputs exactos e frescos.
+Registar bloqueios genuínos; **nunca** enfraquecer um teste nem inventar substituto para forçar verde.
+
+**Ambiente.** Offline, preservar caches e falhar fechado: não activar rede nem integrações de
+produção, não correr `npm ci`, não apagar `node_modules` sem aprovação explícita.
+
+**Subagentes.** Quando o subagente ou o modelo importa, dizer qual antes de delegar. Provar a
+delegação pelo `turn_context.payload.model` do rollout — configuração e prompt não são prova.
+
+**Planos e reviews.** Dependências ordenadas, gates duros, condições de paragem, ownership e prova
+de validação. Trabalho incremental que preserva os caminhos legacy a funcionar até a equivalência
+estar demonstrada.
+
+**Documentação.** Docs activos em `PENDENTE` / `EM CURSO`; fechado arquiva em `TASKS_DONE.md`.
+Snapshots datados, caminhos portáveis, ownership FE/BE explícito, identificadores de produção
+redigidos.
+
+---
+
+## Baseline de plugins do Codex
+
+Instalados do canal curated da OpenAI, não redistribuídos por este repo — cada máquina instala do
+mesmo sítio. Ficam registados para as máquinas não divergirem no que têm disponível:
+
+| Plugin | Para quê |
+|---|---|
+| `superpowers` | workflow: brainstorming, TDD, systematic-debugging, writing-plans, executing-plans, verification-before-completion, code review, git worktrees, subagentes |
+| `github` | operações de GitHub |
+| `data-analytics` | análise de dados |
+| `plugin-management` | gestão dos próprios plugins |
+| `openai-templates` | templates |
+
+O `superpowers` cobre o mesmo terreno das regras acima — quando as duas falarem do mesmo, estas
+ganham, por serem específicas de como trabalhamos.
+
+---
+
 ## Nunca
 
 - Commitar credenciais, tokens ou chaves — em código, em docs ou em memória
