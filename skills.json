@@ -8,7 +8,10 @@
       "ref": "b0594c72d18006b5865c70eb3a97e8b04064e600",
       "path": ".agents/skills/impeccable",
       "license": "Apache-2.0",
-      "targets": ["claude", "codex"],
+      "targets": [
+        "claude",
+        "codex"
+      ],
       "why": "Metodo de design deste projecto. O `.impeccable.md` do FinhubFront e escrito para esta skill e nomeia os comandos que ela expoe (/critique, /polish, /bolder, ...). Upstream consolidou 21 skills separadas nesta unica — uma entrada na listagem em vez de 21."
     },
     {
@@ -18,8 +21,23 @@
       "ref": "main",
       "path": "plugins/developer-essentials/skills/auth-implementation-patterns",
       "license": "MIT",
-      "targets": ["claude", "codex"],
+      "targets": [
+        "claude",
+        "codex"
+      ],
       "why": "JWT com access e refresh e o nucleo da auth do Finhub_Back."
+    },
+    {
+      "name": "taste-skill",
+      "repo": "tasteskill/tasteskill",
+      "url": "https://github.com/tasteskill/tasteskill.git",
+      "ref": "37c8c376b92ebc02456f7c70776b514fddda88e1",
+      "path": "skills/taste-skill",
+      "license": "MIT",
+      "targets": [
+        "claude"
+      ],
+      "why": "Anti-slop para landing pages e redesigns. Estava so numa maquina, sem origem identificada; a origem e o tasteskill/tasteskill (MIT). A copia local era um snapshot antigo da variante gpt-taste, com 1206 linhas contra 226 da versao empacotada."
     }
   ],
   "rejeitadas": {
