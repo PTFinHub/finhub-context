@@ -56,18 +56,44 @@ for agent in "$REPO_DIR"/codex/agents/*.toml; do
   agents=$((agents + 1))
 done
 
-# Regras universais do Codex (~/.codex/AGENTS.md) — mesma politica nao destrutiva
+# Regras universais do Codex (~/.codex/AGENTS.md)
+#
+# Nao basta perguntar "o ficheiro existe?": depois da primeira instalacao existe sempre,
+# e a partir dai nenhuma actualizacao do repo chegava a esta maquina. Guardamos o hash do
+# que escrevemos; se o ficheiro ainda tiver esse hash, e nosso e pode ser actualizado.
 CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
 global_rules="$REPO_DIR/codex/AGENTS.md"
 target_rules="$CODEX_HOME/AGENTS.md"
+state_file="$CODEX_HOME/.finhub-installed"
+
 if [ -f "$global_rules" ]; then
   mkdir -p "$CODEX_HOME"
-  if [ -s "$target_rules" ] && [ ! -L "$target_rules" ] && [ "$FORCE" != "1" ]; then
-    echo "  ! ~/.codex/AGENTS.md tem conteudo proprio — nao tocado (FINHUB_FORCE=1 para substituir)"
-  else
+  wrote_sha=""
+  [ -f "$state_file" ] && wrote_sha="$(cat "$state_file" 2>/dev/null || true)"
+  current_sha=""
+  [ -f "$target_rules" ] && current_sha="$(sha256sum "$target_rules" | cut -d' ' -f1)"
+
+  # Primeira corrida depois desta correccao: sem estado guardado, mas se o conteudo
+  # instalado for igual a qualquer versao historica do ficheiro no repo, fomos nos que o
+  # escrevemos e podemos actualizar sem pedir FINHUB_FORCE.
+  # Compara-se pelo blob hash do git: e exacto e nao depende de codificacao.
+  ours=0
+  if [ -z "$wrote_sha" ] && [ -s "$target_rules" ]; then
+    blob="$(git -C "$REPO_DIR" hash-object --no-filters "$target_rules" 2>/dev/null)"
+    for c in $(git -C "$REPO_DIR" log --format=%H -- codex/AGENTS.md 2>/dev/null); do
+      if [ "$(git -C "$REPO_DIR" rev-parse "$c:codex/AGENTS.md" 2>/dev/null)" = "$blob" ]; then
+        ours=1; break
+      fi
+    done
+  fi
+
+  if [ ! -e "$target_rules" ] || [ -L "$target_rules" ] || [ ! -s "$target_rules" ]      || [ "$current_sha" = "$wrote_sha" ] || [ "$ours" = "1" ] || [ "$FORCE" = "1" ]; then
     rm -f "$target_rules"
-    ln -s "$global_rules" "$target_rules"
-    echo "finhub-context: regras universais ligadas em $target_rules"
+    cp "$global_rules" "$target_rules"
+    sha256sum "$target_rules" | cut -d' ' -f1 > "$state_file"
+    echo "finhub-context: regras universais actualizadas em $target_rules"
+  else
+    echo "  ! ~/.codex/AGENTS.md foi alterado fora do installer — nao tocado (FINHUB_FORCE=1 para substituir)"
   fi
 fi
 

@@ -178,9 +178,14 @@ Procura em `Documents/GitHub`, `Documents` e `Desktop` até oito níveis. Se est
 FINHUB_REPOS_DIR=/caminho/para/a/pasta node scripts/setup.mjs
 ```
 
-**O installer diz que um ficheiro "tem conteúdo próprio" e não lhe tocou**
+**O installer diz que um ficheiro "foi alterado fora do installer" e não lhe tocou**
 É deliberado — nunca substitui trabalho local sem confirmação. Vê o que lá está: se for contexto que
-vale a pena, sobe ao repo por PR em vez de o perder. Só depois voltar a correr com `--apply`.
+vale a pena, sobe ao repo por PR em vez de o perder. Só depois `FINHUB_FORCE=1` (bash) ou `-Force`
+(PowerShell).
+
+O installer sabe distinguir o que escreveu do que alguém alterou: guarda o hash do que instalou em
+`~/.codex/.finhub-installed.json`, e reconhece também qualquer versão histórica do ficheiro no repo.
+Actualizações do repo chegam sem `--force`; edições tuas ficam protegidas.
 
 ---
 

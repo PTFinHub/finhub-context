@@ -67,19 +67,58 @@ if (Test-Path $agentSource) {
   }
 }
 
-# Regras universais do Codex (~/.codex/AGENTS.md) - mesma politica nao destrutiva
+# Regras universais do Codex (~/.codex/AGENTS.md)
+#
+# Nao basta perguntar "o ficheiro existe?": depois da primeira instalacao existe sempre,
+# e a partir dai nenhuma actualizacao do repo chegava a esta maquina. Guardamos o hash do
+# que escrevemos; se o ficheiro ainda tiver esse hash, e nosso e pode ser actualizado. Se
+# tiver outro, alguem lhe mexeu e nao se toca.
 $codexHome = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $HOME ".codex" }
 $globalRules = Join-Path $repoDir (Join-Path "codex" "AGENTS.md")
 $targetRules = Join-Path $codexHome "AGENTS.md"
+$stateFile = Join-Path $codexHome ".finhub-installed.json"
+
+function Get-Sha($file) {
+  if (-not (Test-Path $file)) { return $null }
+  return (Get-FileHash -Path $file -Algorithm SHA256).Hash
+}
+
 if (Test-Path $globalRules) {
   New-Item -ItemType Directory -Force -Path $codexHome | Out-Null
-  $hasOwn = (Test-Path $targetRules) -and ((Get-Item $targetRules).Length -gt 0) -and ((Get-Item $targetRules -Force).LinkType -eq $null)
-  if ($hasOwn -and -not $Force) {
-    Write-Host "  ! ~/.codex/AGENTS.md tem conteudo proprio - nao tocado (-Force para substituir)"
-  } else {
+
+  $state = @{}
+  if (Test-Path $stateFile) {
+    try { (Get-Content $stateFile -Raw | ConvertFrom-Json).PSObject.Properties | ForEach-Object { $state[$_.Name] = $_.Value } } catch {}
+  }
+
+  $currentSha = Get-Sha $targetRules
+  $wroteSha = $state['agents_md']
+  $ours = (-not (Test-Path $targetRules)) -or ((Get-Item $targetRules).Length -eq 0) -or ($currentSha -eq $wroteSha)
+
+  # Primeira corrida depois desta correccao: nao ha estado guardado. Se o conteudo
+  # instalado corresponder a QUALQUER versao historica do ficheiro no repo, fomos nos que
+  # o escrevemos e podemos actualizar sem pedir -Force.
+  #
+  # Compara-se pelo blob hash do git, nao pelo conteudo: o ficheiro tem acentos e nem o
+  # pipeline nem o redireccionamento do PowerShell preservam a codificacao de forma fiavel.
+  if (-not $ours -and -not $wroteSha -and (Test-Path $targetRules)) {
+    $blob = (& git -C $repoDir hash-object --no-filters $targetRules 2>$null) | Select-Object -First 1
+    if ($blob) {
+      foreach ($c in (& git -C $repoDir log --format=%H -- codex/AGENTS.md 2>$null)) {
+        $historic = (& git -C $repoDir rev-parse "${c}:codex/AGENTS.md" 2>$null) | Select-Object -First 1
+        if ($historic -eq $blob) { $ours = $true; break }
+      }
+    }
+  }
+
+  if ($ours -or $Force) {
     if (Test-Path $targetRules) { Remove-Item $targetRules -Force }
     Copy-Item $globalRules $targetRules
-    Write-Host "finhub-context: regras universais copiadas para $targetRules"
+    $state['agents_md'] = Get-Sha $targetRules
+    $state | ConvertTo-Json | Set-Content $stateFile -Encoding utf8
+    Write-Host "finhub-context: regras universais actualizadas em $targetRules"
+  } else {
+    Write-Host "  ! ~/.codex/AGENTS.md foi alterado fora do installer - nao tocado (-Force para substituir)"
   }
 }
 

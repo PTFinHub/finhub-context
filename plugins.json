@@ -19,15 +19,15 @@
       "name": "finhub-web",
       "marketplace": "finhub",
       "source": "PTFinHub/finhub-context",
-      "why": "skills de frontend — so nas maquinas que trabalham o FinhubFront",
-      "required": false
+      "why": "skills de frontend — as duas maquinas trabalham os dois repos",
+      "required": true
     },
     {
       "name": "finhub-api",
       "marketplace": "finhub",
       "source": "PTFinHub/finhub-context",
-      "why": "skills de backend — so nas maquinas que trabalham o Finhub_Back",
-      "required": false
+      "why": "skills de backend — as duas maquinas trabalham os dois repos",
+      "required": true
     },
     {
       "name": "code-review",
