@@ -89,8 +89,22 @@ redigidos.
 
 ## Baseline de plugins do Codex
 
-Instalados do canal curated da OpenAI, não redistribuídos por este repo — cada máquina instala do
-mesmo sítio. Ficam registados para as máquinas não divergirem no que têm disponível:
+Declarados em [`plugins.json`](../plugins.json) na raiz do repo. Não são redistribuídos por aqui —
+cada máquina instala do canal de origem. O manifesto existe para as máquinas não divergirem no que
+têm disponível.
+
+**Regra:** antes de começar numa máquina, verificar o baseline. Um plugin em falta não dá erro —
+o agente simplesmente não faz aquilo, e a diferença entre máquinas parece inconsistência do modelo.
+
+```bash
+node ~/.finhub-context/scripts/check-plugins.mjs
+```
+
+Lista o que falta e imprime o comando de instalação por CLI. Sai com código 1 se faltar algum
+obrigatório. **Nunca instalar sem dizer ao utilizador o que vai instalar e porquê.**
+
+Plugin novo que passe a fazer parte do fluxo → entrada no `plugins.json`, não instalação silenciosa
+numa máquina só.
 
 | Plugin | Para quê |
 |---|---|

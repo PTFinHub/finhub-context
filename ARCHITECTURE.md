@@ -74,6 +74,7 @@ se não puder sair dela.**
 | `/novo-lote`, `/fecha-lote` | `finhub-context` | marketplace |
 | Agentes do Codex | `finhub-context` → `codex/agents/` | installer |
 | Regras universais (caveman, contexto partilhado) | `finhub-context` → `codex/AGENTS.md` | installer → `~/.codex/AGENTS.md` |
+| Baseline de plugins de terceiros | `finhub-context` → `plugins.json` | **declarado, não distribuído** — `check-plugins.mjs` diz o que falta |
 | `/gates`, `/report` | `.claude/commands/` do repo | git clone |
 | Regras do projecto | `AGENTS.md` do repo | git clone |
 | Estado do lote | `dcos/finhub/TASKS.md` | git clone |
@@ -152,7 +153,8 @@ no `settings.json` versionado, por segurança.
 **Auditar antes de assumir que está alinhado:**
 
 ```bash
-node ~/.finhub-context/scripts/audit-local.mjs
+node ~/.finhub-context/scripts/audit-local.mjs    # skills, agentes, regras
+node ~/.finhub-context/scripts/check-plugins.mjs  # baseline de plugins por CLI
 ```
 
 Lista o que existe localmente e não está no repo, o que diverge, e o que falta.

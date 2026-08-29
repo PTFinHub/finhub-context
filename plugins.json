@@ -1,0 +1,79 @@
+{
+  "$comment": "Baseline de plugins por CLI. Verificar com `node scripts/check-plugins.mjs`. Nem tudo o que esta instalado numa maquina entra aqui — so o que o fluxo de trabalho depende. Extras nao dao erro; sao listados como observados.",
+  "claude": [
+    {
+      "name": "finhub-core",
+      "marketplace": "finhub",
+      "source": "PTFinHub/finhub-context",
+      "why": "caveman (skills + hook SessionStart que o activa) e TypeScript avancado",
+      "required": true
+    },
+    {
+      "name": "finhub-workflow",
+      "marketplace": "finhub",
+      "source": "PTFinHub/finhub-context",
+      "why": "comandos /novo-lote e /fecha-lote",
+      "required": true
+    },
+    {
+      "name": "finhub-web",
+      "marketplace": "finhub",
+      "source": "PTFinHub/finhub-context",
+      "why": "skills de frontend — so nas maquinas que trabalham o FinhubFront",
+      "required": false
+    },
+    {
+      "name": "finhub-api",
+      "marketplace": "finhub",
+      "source": "PTFinHub/finhub-context",
+      "why": "skills de backend — so nas maquinas que trabalham o Finhub_Back",
+      "required": false
+    },
+    {
+      "name": "code-review",
+      "marketplace": "claude-plugins-official",
+      "source": "anthropics/claude-plugins-official",
+      "why": "revisao antes do merge; o CI nao corre nos repos privados",
+      "required": true
+    },
+    {
+      "name": "github",
+      "marketplace": "claude-plugins-official",
+      "source": "anthropics/claude-plugins-official",
+      "why": "PRs e issues sem sair do CLI",
+      "required": true
+    }
+  ],
+  "codex": [
+    {
+      "name": "superpowers",
+      "channel": "openai-curated-remote",
+      "why": "workflow: TDD, systematic-debugging, writing-plans, verification-before-completion, code review, worktrees, subagentes",
+      "required": true
+    },
+    {
+      "name": "github",
+      "channel": "openai-curated-remote",
+      "why": "operacoes de GitHub",
+      "required": true
+    },
+    {
+      "name": "plugin-management",
+      "channel": "openai-curated-remote",
+      "why": "instalar e actualizar os proprios plugins",
+      "required": true
+    },
+    {
+      "name": "data-analytics",
+      "channel": "openai-curated-remote",
+      "why": "analise de dados",
+      "required": false
+    },
+    {
+      "name": "openai-templates",
+      "channel": "openai-curated-remote",
+      "why": "templates",
+      "required": false
+    }
+  ]
+}

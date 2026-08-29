@@ -91,6 +91,7 @@ Vem do `.claude/settings.json` do repo clonado. Nada a fazer.
 ```bash
 node scripts/validate.mjs     # catalogo, manifestos, frontmatter
 node scripts/audit-local.mjs  # o que esta nesta maquina e nao no repo
+node scripts/check-plugins.mjs # baseline de plugins por CLI (Claude e Codex)
 ```
 
 Corre no CI a cada PR (`.github/workflows/validate.yml`): catalogo e manifestos coerentes,
