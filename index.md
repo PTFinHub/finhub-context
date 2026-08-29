@@ -19,13 +19,9 @@ O `--apply` regista o marketplace, instala os plugins obrigatórios do Claude, l
 agentes e as regras universais ao Codex. **Os comandos do Claude só aparecem na sessão seguinte** —
 é assim que os plugins funcionam, e o script diz-to.
 
-**Máquina que já usas, para confirmar que está em dia:** o mesmo comando.
+**Máquina que já usas, para confirmar que está em dia:** o mesmo comando. Sem `--apply` só verifica.
 
-Um comando. Actualiza o repo, liga as skills, os agentes e as regras universais ao Codex, refresca
-o marketplace do Claude, verifica o baseline de plugins, confirma que a memória aponta para dentro
-do repo de código, e no fim diz o que falta e o que só tu podes decidir.
-
-Sem `--apply` só verifica e relata.
+Passos completos, o que fica por máquina e os problemas conhecidos: **[SETUP.md](SETUP.md)**.
 
 ---
 
@@ -33,6 +29,7 @@ Sem `--apply` só verifica e relata.
 
 | Quero… | Ler |
 |---|---|
+| Pôr uma máquina a trabalhar, do zero | [SETUP.md](SETUP.md) |
 | Perceber o sistema todo — fluxos, fronteira, pontos fracos | [ARCHITECTURE.md](ARCHITECTURE.md) |
 | Saber o que este repo distribui e como cada CLI se liga | [README.md](README.md) |
 | As regras que valem em todos os projectos | [codex/AGENTS.md](codex/AGENTS.md) |
