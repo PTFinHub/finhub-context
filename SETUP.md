@@ -85,6 +85,7 @@ node scripts/check-plugins.mjs  # baseline de plugins, por CLI
 node scripts/audit-local.mjs    # o que existe nesta máquina e não no repo
 node scripts/validate.mjs       # o catálogo em si
 node scripts/fingerprint.mjs    # o resumo comparável entre máquinas
+node scripts/install-skills.mjs # skills de terceiros declaradas
 ```
 
 Nenhum destes altera nada.

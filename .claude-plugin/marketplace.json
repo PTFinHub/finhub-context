@@ -15,7 +15,7 @@
       "name": "finhub-web",
       "source": "./plugins/finhub-web",
       "description": "Skills de frontend: React, Vite, Vitest, Tailwind, shadcn/ui, Playwright, acessibilidade e SEO.",
-      "version": "1.0.1"
+      "version": "1.1.0"
     },
     {
       "name": "finhub-api",

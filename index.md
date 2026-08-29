@@ -34,6 +34,7 @@ Passos completos, o que fica por máquina e os problemas conhecidos: **[SETUP.md
 | Saber o que este repo distribui e como cada CLI se liga | [README.md](README.md) |
 | As regras que valem em todos os projectos | [codex/AGENTS.md](codex/AGENTS.md) |
 | Que plugins de terceiros o fluxo assume | [plugins.json](plugins.json) |
+| Que skills de terceiros usamos, e quais rejeitámos | [skills.json](skills.json) |
 | Que modelo e effort são obrigatórios | [baseline.json](baseline.json) |
 | Regras de **um** projecto | `AGENTS.md` do repo de código, não aqui |
 | O que está a ser feito agora | `dcos/finhub/TASKS.md` do repo de código |
@@ -70,6 +71,14 @@ adoptamos algo de fora — uma skill, um hook — copiamos para cá com a proven
 
 Dois canais dariam skills duplicadas e duas fontes a manter. Foi assim que o `caveman` acabou a
 aparecer duas vezes no Claude antes de corrigirmos.
+
+**Skills de terceiros declaram-se, não se copiam.** Ficam em [`skills.json`](skills.json) com origem,
+commit fixo e licença; cada máquina instala com `node scripts/install-skills.mjs --apply`. Fixar o
+commit não é zelo: entre duas instalações, o `impeccable` consolidou 21 skills numa só — sem commit
+fixo, duas máquinas ficariam com coisas diferentes.
+
+A família `caveman` é a única excepção, porque servimos o hook que a activa. Está escrito no
+`SOURCE.md` dela, com o link do upstream e o comando de refresh.
 
 Excepção declarada: plugins de terceiros que não podemos redistribuir (`superpowers` e os outros do
 canal curated da OpenAI). Esses ficam **declarados** no `plugins.json` e cada máquina instala da

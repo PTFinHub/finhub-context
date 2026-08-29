@@ -194,6 +194,15 @@ for (const name of codeRepos) {
 }
 if (!memoryChecked) ok('memória', 'nenhum repo de código encontrado nos sítios habituais');
 
+// ---------- 5b. Skills de terceiros declaradas ----------
+
+const thirdParty = run('node', [path.join(repoRoot, 'scripts', 'install-skills.mjs'), ...(apply ? ['--apply'] : [])]);
+if (thirdParty.status === 0) {
+  ok('skills terceiros', 'declaradas e presentes');
+} else {
+  todo('skills terceiros', 'declaradas mas em falta', 'node scripts/install-skills.mjs --apply');
+}
+
 // ---------- 6. Modelo e effort declarados ----------
 
 const baseline = readJson(path.join(repoRoot, 'baseline.json'));

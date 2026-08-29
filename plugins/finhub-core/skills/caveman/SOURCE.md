@@ -29,6 +29,15 @@ ele chega.
 Por isso o `finhub-core` declara ele proprio o hook `SessionStart` que activa o modo caveman em
 todas as sessoes do Claude. O ficheiro do hook e copia literal do upstream (MIT, `hooks/LICENSE`).
 
+## Porque esta e a excepcao
+
+A regra do repo e: skills de terceiros sao **declaradas** em [`skills.json`](../../../../skills.json)
+e instaladas da origem, nao redistribuidas. A familia caveman e a unica excepcao, e por um motivo
+concreto: o hook `SessionStart` que garante o modo caveman em todas as sessoes vive no
+`finhub-core` e serve estes ficheiros. Separar o hook do conteudo devolvia a garantia ao acaso.
+
+Actualizar a partir do upstream — <https://github.com/juliusbrussee/caveman>:
+
 ## Manter verbatim
 
 Editar à mão diverge da fonte e reintroduz a deriva que este repo existe para eliminar.

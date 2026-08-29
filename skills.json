@@ -1,0 +1,40 @@
+{
+  "$comment": "Skills de terceiros que o fluxo usa mas que NAO sao redistribuidas por este repo. Cada maquina instala da origem com `node scripts/install-skills.mjs`. Fixamos o commit: sem isso, duas maquinas que instalem em dias diferentes ficam com conteudo diferente — a divergencia que este repo existe para eliminar. Skills escritas por nos vivem em plugins/, nao aqui.",
+  "skills": [
+    {
+      "name": "impeccable",
+      "repo": "pbakaus/impeccable",
+      "url": "https://github.com/pbakaus/impeccable.git",
+      "ref": "b0594c72d18006b5865c70eb3a97e8b04064e600",
+      "path": ".agents/skills/impeccable",
+      "license": "Apache-2.0",
+      "targets": ["claude", "codex"],
+      "why": "Metodo de design deste projecto. O `.impeccable.md` do FinhubFront e escrito para esta skill e nomeia os comandos que ela expoe (/critique, /polish, /bolder, ...). Upstream consolidou 21 skills separadas nesta unica — uma entrada na listagem em vez de 21."
+    },
+    {
+      "name": "auth-implementation-patterns",
+      "repo": "wshobson/agents",
+      "url": "https://github.com/wshobson/agents.git",
+      "ref": "main",
+      "path": "plugins/developer-essentials/skills/auth-implementation-patterns",
+      "license": "MIT",
+      "targets": ["claude", "codex"],
+      "why": "JWT com access e refresh e o nucleo da auth do Finhub_Back."
+    }
+  ],
+  "rejeitadas": {
+    "$comment": "Registadas para nao voltarem a ser discutidas do zero. Cada linha diz porque nao entra.",
+    "e2e-testing-patterns": "duplica playwright-best-practices, que ja distribuimos",
+    "javascript-typescript-jest": "o projecto usa Vitest, nao Jest",
+    "security-review": "o Claude Code ja traz uma skill security-review",
+    "codeql": "sem CodeQL no fluxo",
+    "secret-scanning": "coberto pela regra de nunca commitar credenciais e pelo review",
+    "deployment-pipeline-design": "Railway faz auto-deploy; nao desenhamos pipeline",
+    "game-development": "fora do dominio",
+    "breakdown-test": "sobrepoe-se ao workflow do superpowers",
+    "skill-scanner": "meta-tooling, nao e o fluxo",
+    "find-skills": "meta-tooling, nao e o fluxo",
+    "frontend-design": "upstream dobrou-a dentro do impeccable; a copia que tinhamos em finhub-web era desse layout antigo",
+    "compress / caveman-commit / caveman-review / caveman": "vendorizadas em plugins/finhub-core — ver plugins/finhub-core/skills/caveman/SOURCE.md para o porque"
+  }
+}
