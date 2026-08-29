@@ -124,7 +124,13 @@ em Windows**. O Codex — que é quem mais aplica — depende da regra escrita.
 ```bash
 git clone https://github.com/PTFinHub/FinhubFront.git
 git clone https://github.com/PTFinHub/Finhub_Back.git
+git clone https://github.com/PTFinHub/finhub-context.git
+
+cd finhub-context && node scripts/setup.mjs --apply
 ```
+
+O `setup.mjs` faz e valida os passos abaixo de uma vez; ficam documentados porque é útil saber o
+que ele está a fazer, e porque um deles continua a precisar de ti.
 
 **Claude** — abrir na pasta e confiar. O `extraKnownMarketplaces` regista o marketplace e o
 `enabledPlugins` instala. Se não apanhar:

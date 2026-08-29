@@ -1,5 +1,8 @@
 # finhub-context
 
+> **Primeira vez aqui, ou máquina nova? Começa em [index.md](index.md).**
+> Um comando prepara e valida a máquina: `node scripts/setup.mjs --apply`
+
 Fonte única das skills usadas pelos agentes de IA nos repos FinHub.
 
 Objectivo: trabalhar **de qualquer máquina e de qualquer CLI** sempre com as mesmas skills,

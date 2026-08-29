@@ -50,8 +50,12 @@ CLIs e os outros PCs nunca o vêem. Descoberta útil → PR no `finhub-context`.
 Actualizar esta máquina:
 
 ```bash
-bash <repo>/scripts/install-codex-skills.sh
+node <repo>/scripts/setup.mjs --apply
 ```
+
+**Como as melhorias chegam a toda a gente:** melhoria numa máquina → PR no `finhub-context` → CI
+valida → merge humano → nas outras máquinas, `setup.mjs --apply`. Nunca ficheiro local: só aquele
+agente naquela máquina o veria.
 
 ---
 
