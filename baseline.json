@@ -1,0 +1,17 @@
+{
+  "$comment": "Configuracao que nao pode ser distribuida por ficheiro — vive nas preferencias de cada maquina — mas que TEM de ser igual em todas. Declarada aqui e verificada por `node scripts/setup.mjs`. Regras iguais com effort diferente produzem trabalho diferente, e isso le-se como o modelo ser erratico quando e configuracao.",
+  "models": {
+    "claude": {
+      "model": "opus",
+      "effortLevel": "high",
+      "where": "~/.claude/settings.json — e tambem no .claude/settings.json versionado de cada repo de codigo, que ganha",
+      "why": "Opus 5 com effort alto e o baseline desta fase"
+    },
+    "codex": {
+      "model": "gpt-5.6-sol",
+      "model_reasoning_effort": "medium",
+      "where": "~/.codex/config.toml, chaves de topo",
+      "why": "Sol com effort medio e obrigatorio nesta fase. Preservar o resto do ficheiro ao editar: verificar duplicados, nao reescrever seccoes."
+    }
+  }
+}

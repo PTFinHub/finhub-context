@@ -186,7 +186,47 @@ for (const name of codeRepos) {
 }
 if (!memoryChecked) ok('memória', 'nenhum repo de código encontrado nos sítios habituais');
 
-// ---------- 6. Auditoria do que só existe aqui ----------
+// ---------- 6. Modelo e effort declarados ----------
+
+const baseline = readJson(path.join(repoRoot, 'baseline.json'));
+
+if (baseline && baseline.models) {
+  // Claude: a preferência global da máquina. O settings.json versionado de cada repo
+  // ganha sobre isto, mas se a global divergir o comportamento muda fora dos repos.
+  const wantClaude = baseline.models.claude;
+  if (fs.existsSync(path.join(home, '.claude'))) {
+    const s = readJson(path.join(home, '.claude', 'settings.json')) || {};
+    const same = s.model === wantClaude.model && s.effortLevel === wantClaude.effortLevel;
+    if (same) ok('modelo claude', `${s.model}/${s.effortLevel}`);
+    else
+      human(
+        'modelo claude',
+        `${s.model || 'default'}/${s.effortLevel || 'default'} — declarado: ${wantClaude.model}/${wantClaude.effortLevel}`,
+        `pôr em ~/.claude/settings.json (merge): "model": "${wantClaude.model}", "effortLevel": "${wantClaude.effortLevel}"`
+      );
+  }
+
+  // Codex: chaves de topo do config.toml. Nunca reescrever o ficheiro — só estas duas linhas.
+  const wantCodex = baseline.models.codex;
+  const codexConfigPath = path.join(home, '.codex', 'config.toml');
+  if (fs.existsSync(codexConfigPath)) {
+    const toml = fs.readFileSync(codexConfigPath, 'utf8');
+    const pick = (key) => (toml.match(new RegExp(`^${key}\\s*=\\s*"([^"]+)"`, 'm')) || [, null])[1];
+    const model = pick('model');
+    const effort = pick('model_reasoning_effort');
+    if (model === wantCodex.model && effort === wantCodex.model_reasoning_effort) {
+      ok('modelo codex', `${model}/${effort}`);
+    } else {
+      human(
+        'modelo codex',
+        `${model || '—'}/${effort || '—'} — declarado: ${wantCodex.model}/${wantCodex.model_reasoning_effort}`,
+        `editar as duas chaves de topo de ~/.codex/config.toml, preservando o resto do ficheiro`
+      );
+    }
+  }
+}
+
+// ---------- 7. Auditoria do que só existe aqui ----------
 
 const audit = run('node', [path.join(repoRoot, 'scripts', 'audit-local.mjs')]);
 const needsDecision = (audit.stdout || '').match(/(\d+) a precisar de decisao/);

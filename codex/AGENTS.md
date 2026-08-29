@@ -31,6 +31,22 @@ Override do utilizador (`stop caveman`, `/caveman lite|ultra`) prevalece sempre.
 
 ---
 
+## Modelo e effort — obrigatorio
+
+| CLI | Modelo | Effort |
+|---|---|---|
+| Codex | `gpt-5.6-sol` | `medium` |
+| Claude | `opus` | `high` |
+
+Declarado em [`baseline.json`](../baseline.json) e verificado pelo `setup.mjs`. Nao e preferencia:
+regras iguais com effort diferente produzem trabalho diferente, e isso le-se como o modelo ser
+erratico quando e configuracao.
+
+No Codex sao as duas chaves de topo do `~/.codex/config.toml`. **Ao editar, preservar o resto do
+ficheiro** — verificar duplicados, nao reescrever seccoes, confirmar que ainda parseia.
+
+---
+
 ## Contexto partilhado
 
 Skills, comandos de lote e agentes vivem em **`PTFinHub/finhub-context`**, não nos repos de código

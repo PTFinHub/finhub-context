@@ -132,8 +132,19 @@ forma diferente com as mesmas regras — e parece inconsistência do modelo quan
 | `<repo>/.claude/settings.local.json` | `autoMemoryDirectory` e permissões locais |
 | credenciais, tokens, sessões | nunca saem da máquina |
 
-**Modelo e effort do Claude** já vêm do `.claude/settings.json` versionado de cada repo de código
-(`opus` / `high`) — esses não precisam de alinhamento manual. O Codex ainda precisa.
+### Modelo e effort — obrigatório
+
+| CLI | Modelo | Effort | Onde |
+|---|---|---|---|
+| Codex | `gpt-5.6-sol` | `medium` | `~/.codex/config.toml`, chaves de topo |
+| Claude | `opus` | `high` | `~/.claude/settings.json` |
+
+Declarado em [`baseline.json`](baseline.json). O `setup.mjs` verifica e avisa quando diverge; a
+alteração é manual de propósito, porque tocar no `config.toml` do Codex sem cuidado parte
+configuração que não é nossa.
+
+No Claude, os repos de código já fixam `opus`/`high` no `settings.json` versionado — isso ganha
+sobre a preferência global dentro desses repos. A global continua a valer fora deles.
 
 ---
 

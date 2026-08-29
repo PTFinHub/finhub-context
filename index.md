@@ -34,6 +34,7 @@ Passos completos, o que fica por máquina e os problemas conhecidos: **[SETUP.md
 | Saber o que este repo distribui e como cada CLI se liga | [README.md](README.md) |
 | As regras que valem em todos os projectos | [codex/AGENTS.md](codex/AGENTS.md) |
 | Que plugins de terceiros o fluxo assume | [plugins.json](plugins.json) |
+| Que modelo e effort são obrigatórios | [baseline.json](baseline.json) |
 | Regras de **um** projecto | `AGENTS.md` do repo de código, não aqui |
 | O que está a ser feito agora | `dcos/finhub/TASKS.md` do repo de código |
 
