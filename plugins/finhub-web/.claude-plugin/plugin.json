@@ -1,6 +1,8 @@
 {
   "name": "finhub-web",
   "description": "Skills de frontend para o FinhubFront (React + Vike + Tailwind + shadcn).",
-  "version": "1.0.0",
-  "author": { "name": "PTFinHub" }
+  "version": "1.0.1",
+  "author": {
+    "name": "PTFinHub"
+  }
 }
