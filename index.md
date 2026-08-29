@@ -98,6 +98,7 @@ node scripts/setup.mjs          # tudo: repo, Codex, Claude, plugins, memória, 
 node scripts/check-plugins.mjs  # só o baseline de plugins, por CLI
 node scripts/audit-local.mjs    # o que existe nesta máquina e não no repo
 node scripts/validate.mjs       # o catálogo em si (corre também no CI)
+node scripts/fingerprint.mjs    # resumo comparável: duas máquinas iguais dão o mesmo
 ```
 
 O `setup.mjs` sai com código 1 se faltar um passo automático — serve como gate.

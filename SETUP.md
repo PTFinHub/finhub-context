@@ -84,9 +84,25 @@ Verificações mais estreitas, quando precisares:
 node scripts/check-plugins.mjs  # baseline de plugins, por CLI
 node scripts/audit-local.mjs    # o que existe nesta máquina e não no repo
 node scripts/validate.mjs       # o catálogo em si
+node scripts/fingerprint.mjs    # o resumo comparável entre máquinas
 ```
 
 Nenhum destes altera nada.
+
+### Provar que duas máquinas são equivalentes
+
+O `setup.mjs` prova presença — existe, está ligado. Não prova que duas máquinas se comportam da
+mesma maneira. Para isso:
+
+```bash
+node scripts/fingerprint.mjs
+```
+
+Resume o que a máquina vai realmente dar aos agentes: versão do cérebro, hash das regras universais,
+hash das skills, versões dos plugins, e modelo/effort de cada CLI. Caminhos e hostnames ficam de
+fora — senão nunca haveria dois iguais.
+
+**Mesmo RESUMO = mesmo comportamento.** Se diferirem, a linha que difere diz em quê.
 
 ---
 
