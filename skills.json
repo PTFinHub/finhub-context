@@ -38,6 +38,76 @@
         "claude"
       ],
       "why": "Anti-slop para landing pages e redesigns. Estava so numa maquina, sem origem identificada; a origem e o tasteskill/tasteskill (MIT). A copia local era um snapshot antigo da variante gpt-taste, com 1206 linhas contra 226 da versao empacotada."
+    },
+    {
+      "name": "thermo-nuclear-code-quality-review",
+      "repo": "cursor/plugins",
+      "url": "https://github.com/cursor/plugins.git",
+      "ref": "93b00b89ef425a9c1bac0d0b317dfc49c930ac99",
+      "path": "cursor-team-kit/skills/thermo-nuclear-code-quality-review",
+      "license": "MIT",
+      "targets": [
+        "claude",
+        "codex"
+      ],
+      "why": "Review estrutural deliberadamente severo. Usar explicitamente depois dos gates funcionais, antes de Qodo/merge, em PRs grandes, refactors ou diffs que aumentem branching, acoplamento, casts, wrappers ou tamanho de ficheiros. Nao substitui testes, security review, performance review, Qodo nem a review normal de corretude."
+    },
+    {
+      "name": "improve-codebase-architecture",
+      "repo": "mattpocock/skills",
+      "url": "https://github.com/mattpocock/skills.git",
+      "ref": "3cca18b368ae95cdbdebbff572ccafa662551015",
+      "path": "skills/engineering/improve-codebase-architecture",
+      "license": "MIT",
+      "targets": [
+        "claude",
+        "codex"
+      ],
+      "why": "Auditoria de arquitectura fora da execucao de tickets: encontra hotspots e produz candidatos, sem alterar codigo. Usar antes de uma iniciativa grande ou em manutencao periodica; converter apenas o candidato escolhido em spec/tickets Linear. Em ambientes offline pedir HTML com CSS/SVG inline, porque o scaffold upstream usa CDN.",
+      "dependencies": [
+        "codebase-design",
+        "grilling",
+        "domain-modeling"
+      ]
+    },
+    {
+      "name": "codebase-design",
+      "repo": "mattpocock/skills",
+      "url": "https://github.com/mattpocock/skills.git",
+      "ref": "3cca18b368ae95cdbdebbff572ccafa662551015",
+      "path": "skills/engineering/codebase-design",
+      "license": "MIT",
+      "targets": [
+        "claude",
+        "codex"
+      ],
+      "why": "Dependencia de improve-codebase-architecture: fornece vocabulario e criterios para modulos profundos, interfaces, seams, adapters, leverage e locality."
+    },
+    {
+      "name": "grilling",
+      "repo": "mattpocock/skills",
+      "url": "https://github.com/mattpocock/skills.git",
+      "ref": "3cca18b368ae95cdbdebbff572ccafa662551015",
+      "path": "skills/productivity/grilling",
+      "license": "MIT",
+      "targets": [
+        "claude",
+        "codex"
+      ],
+      "why": "Dependencia de improve-codebase-architecture: explora com o utilizador o candidato arquitectural escolhido. Nao corre durante o scan inicial nem autoriza alteracoes por si."
+    },
+    {
+      "name": "domain-modeling",
+      "repo": "mattpocock/skills",
+      "url": "https://github.com/mattpocock/skills.git",
+      "ref": "3cca18b368ae95cdbdebbff572ccafa662551015",
+      "path": "skills/engineering/domain-modeling",
+      "license": "MIT",
+      "targets": [
+        "claude",
+        "codex"
+      ],
+      "why": "Dependencia de improve-codebase-architecture: mantém vocabulario de dominio e ADRs quando uma decisao arquitectural realmente cristaliza. No FinHub, respeitar os documentos canonicos existentes em dcos/finhub em vez de criar CONTEXT.md paralelo sem necessidade."
     }
   ],
   "rejeitadas": {
