@@ -50,7 +50,7 @@
         "claude",
         "codex"
       ],
-      "why": "Review estrutural deliberadamente severo. Usar explicitamente depois dos gates funcionais, antes de Qodo/merge, em PRs grandes, refactors ou diffs que aumentem branching, acoplamento, casts, wrappers ou tamanho de ficheiros. Nao substitui testes, security review, performance review, Qodo nem a review normal de corretude."
+      "why": "Review estrutural deliberadamente severo. Usar explicitamente depois dos gates funcionais, antes de Qodo/merge, em PRs grandes, refactors ou diffs que aumentem branching, acoplamento, casts, wrappers ou tamanho de ficheiros. Nao substitui testes, security review, performance review, Qodo nem a review normal de corretude. Se Qodo for formalmente retirado, exigir tambem segunda review independente no head exacto, com SHA e findings registados."
     },
     {
       "name": "improve-codebase-architecture",
