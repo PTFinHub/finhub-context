@@ -23,6 +23,25 @@ Fora dos plugins:
 - `codex/AGENTS.md` — regras universais que se aplicam a **todas** as sessões do Codex, em
   qualquer projecto. Ligado a `~/.codex/AGENTS.md` pelo installer.
 - `codex/agents/` — sub-agentes do Codex (`.toml`), ligados a `~/.codex/agents`.
+- `skills.json` — skills de terceiros fixadas por commit e ligadas a Claude/Codex por
+  `scripts/install-skills.mjs`. Inclui reviews especializadas e as dependências que exigem.
+
+### Reviews de qualidade e arquitectura
+
+| Skill | Quando usar | Quando não usar |
+|---|---|---|
+| `thermo-nuclear-code-quality-review` | Depois dos gates funcionais, antes de Qodo/merge, quando um PR grande ou refactor pode degradar estrutura, modularidade, tipos ou legibilidade | Como substituto de testes, security/performance review, Qodo ou review normal de corretude |
+| `improve-codebase-architecture` | Fora da execução de tickets, antes de uma iniciativa grande ou numa revisão periódica de hotspots; produz candidatos para futura spec/Linear | No meio de um ticket folha, para refactor oportunista ou para alterar código automaticamente |
+
+Fluxo normal de um diff estrutural: gates funcionais → review `thermo-nuclear` → correcções e novos
+gates → Qodo no head exacto → review do coordenador → merge. Se o Qodo for formalmente retirado por
+custo ou indisponibilidade, exige-se em seu lugar uma segunda review independente no head exacto,
+com SHA e findings registados; `thermo-nuclear` isolada nunca é equivalência suficiente.
+
+`improve-codebase-architecture` depende de `codebase-design`, `grilling` e `domain-modeling`.
+O scan inicial é só leitura e relatório; decisões e alterações continuam sujeitas ao workflow
+FinHub. O relatório upstream usa Tailwind/Mermaid por CDN; em ambiente offline deve ser pedido com
+CSS e SVG inline.
 
 Formato `SKILL.md`, lido por Claude Code, Codex e restantes agentes compatíveis.
 

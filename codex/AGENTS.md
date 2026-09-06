@@ -101,6 +101,20 @@ delegação pelo `turn_context.payload.model` do rollout — configuração e pr
 de validação. Trabalho incremental que preserva os caminhos legacy a funcionar até a equivalência
 estar demonstrada.
 
+**Review estrutural thermo-nuclear.** Depois dos gates funcionais e antes do Qodo/merge, executar
+`thermo-nuclear-code-quality-review` quando o diff for um refactor, atravessar FE/BE ou contratos,
+aumentar branching/acoplamento/casts/wrappers, tocar módulos já complexos, ou aproximar ficheiros
+dos limites de tamanho. É dispensável em alterações documentais e diffs triviais sem impacto
+estrutural. Findings bloqueantes voltam ao implementador e os gates repetem depois da correcção.
+Esta review mede manutenibilidade; não substitui testes, browser quando aplicável, segurança,
+contratos, Qodo nem a decisão independente do reviewer principal.
+
+**Fallback sem Qodo.** Qodo continua obrigatório enquanto fizer parte do fluxo. Se for formalmente
+desactivado por custo ou indisponibilidade, `thermo-nuclear-code-quality-review` sozinho não o
+substitui: o head exacto precisa também de uma segunda review por agente/sessão independente do
+implementador, com findings e SHA registados no PR ou na evidência versionada, além da review final
+do coordenador. Nunca omitir silenciosamente o Qodo nem declarar equivalência sem estas provas.
+
 **Documentação.** Docs activos em `PENDENTE` / `EM CURSO`; fechado arquiva em `TASKS_DONE.md`.
 Snapshots datados, caminhos portáveis, ownership FE/BE explícito, identificadores de produção
 redigidos.
