@@ -50,6 +50,7 @@ não puder sair dela.**
 |---|---|---|
 | Skills | aqui, `plugins/*/skills/` | marketplace (Claude) · installer (Codex) |
 | `/novo-lote`, `/fecha-lote` | aqui, `plugins/finhub-workflow/commands/` | marketplace |
+| Fluxo de entrega | aqui, [`coordinating-ticket-delivery`](plugins/finhub-workflow/skills/coordinating-ticket-delivery/SKILL.md) | marketplace (Claude) · installer (Codex) |
 | Agentes do Codex | aqui, `codex/agents/` | installer |
 | Regras universais | aqui, `codex/AGENTS.md` | installer → `~/.codex/AGENTS.md` |
 | Baseline de plugins | aqui, `plugins.json` | **declarado, não distribuído** |

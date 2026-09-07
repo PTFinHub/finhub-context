@@ -31,31 +31,10 @@ nos repos privados.
 
 ## O fluxo de uma task
 
-```
-Joao define o objectivo
-      |
-      v
-Claude  le AGENTS.md + dcos/finhub/TASKS.md + memoria
-        pensa, organiza, decide a abordagem
-      |
-      v
-Codex   aplica o codigo
-      |
-      v
-/gates  typecheck + lint (frontend) ou typecheck + contratos (backend)
-      |
-      v
-commit em branch de lote, nunca em main
-      |
-      v
-PR  ->  CI: shared-context-guard + ci.yml
-      |
-      v
-Joao revê e faz merge
-```
-
-Papéis: **Claude** decide UI/UX/layout e organiza; **Codex** aplica lógica de negócio, APIs,
-testes, infra. O Codex não altera componentes de UI, CSS ou design tokens sem instrução explícita.
+O processo partilhado completo vive na skill
+[`coordinating-ticket-delivery`](plugins/finhub-workflow/skills/coordinating-ticket-delivery/SKILL.md). Esse ficheiro
+define papéis, estados, capacidade, comunicação, gates por impacto, reviews e fecho operacional.
+Linear e os `AGENTS.md` dos repos privados acrescentam ownership, comandos e regras de produto.
 
 `/novo-lote` e `/fecha-lote` conduzem as pontas deste fluxo e vêm do `finhub-context`, por isso
 comportam-se igual nos dois repos e nas duas máquinas. O `/fecha-lote` chama o `/gates` **local**,
@@ -188,7 +167,7 @@ Lista o que existe localmente e não está no repo, o que diverge, e o que falta
 |---|---|---|
 | ~~GitHub Actions nos repos privados~~ | **decidido: não se paga.** O CI nunca será a rede nos repos de código | fechado por decisão — a revisão é o Qodo mais o review humano |
 | Codex sem travão em sessão (Windows) | regra escrita, não garantida | limitação da ferramenta — reavaliar quando os hooks saírem de experimental |
-| ~~Backend sem `pre-commit`~~ | **decidido: aceite.** O Qodo faz a revisão nos PRs | fechado por decisão |
+| ~~Backend sem `pre-commit`~~ | **decidido: aceite.** Aplicam-se os gates e reviews de `coordinating-ticket-delivery` | fechado por decisão |
 | Dois `TASKS.md` a contradizerem-se | frontend diz `BUD-FEM-05` (2026-07-28), overlay do backend diz outra coisa (2026-08-27) | **precisa de decisão: qual é canónico** |
 | `~/.codex/config.toml` não distribuído | modelo e reasoning effort do Codex podem diferir entre máquinas; o do Claude já vem do repo | por resolver |
 | ~~`browser-automation` e `taste-skill` sem licença~~ | resolvido: `taste-skill` declarada de `tasteskill/tasteskill` (MIT); `browser-automation` reescrita por nós | fechado |

@@ -16,12 +16,15 @@ a este repo à sua maneira.
 | `finhub-core` | `caveman`, `caveman-commit`, `caveman-review`, `caveman-compress`, `typescript-advanced-types` — e o hook `SessionStart` que activa o modo caveman |
 | `finhub-web` | `accessibility`, `frontend-design`, `playwright-best-practices`, `seo`, `shadcn`, `tailwind-css-patterns`, `tailwind-v4-shadcn`, `vercel-composition-patterns`, `vercel-react-best-practices`, `vite`, `vitest` |
 | `finhub-api` | `nodejs-backend-patterns`, `nodejs-best-practices`, `nodejs-express-server` |
-| `finhub-workflow` | comandos `/novo-lote` e `/fecha-lote` |
+| `finhub-workflow` | fluxo `coordinating-ticket-delivery` e comandos `/novo-lote` e `/fecha-lote` |
 
 Fora dos plugins:
 
 - `codex/AGENTS.md` — regras universais que se aplicam a **todas** as sessões do Codex, em
   qualquer projecto. Ligado a `~/.codex/AGENTS.md` pelo installer.
+- `plugins/finhub-workflow/skills/coordinating-ticket-delivery/SKILL.md` — fonte única do ciclo
+  partilhado de ticket, auto-descoberta por Claude e Codex: coordenação, implementação, gates por
+  impacto, comunicação, reviews, merge e fecho operacional.
 - `codex/agents/` — sub-agentes do Codex (`.toml`), ligados a `~/.codex/agents`.
 - `skills.json` — skills de terceiros fixadas por commit e ligadas a Claude/Codex por
   `scripts/install-skills.mjs`. Inclui reviews especializadas e as dependências que exigem.
@@ -121,7 +124,7 @@ cada `SKILL.md` com `name` e `description` no frontmatter, markdown em LF. Uma s
 `description` nunca auto-activa por intencao — passa a existir sem nunca ser usada.
 
 Este repo alimenta todas as maquinas e CLIs: um erro aqui chega a todos no proximo pull.
-Por isso nada entra sem passar no CI, e o merge e humano.
+Por isso nada entra sem passar no CI e sem merge autorizado segundo o fluxo canónico.
 
 ## Regras
 
