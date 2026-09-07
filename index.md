@@ -38,6 +38,7 @@ Passos completos, o que fica por máquina e os problemas conhecidos: **[SETUP.md
 | Que modelo e effort são obrigatórios | [baseline.json](baseline.json) |
 | Regras de **um** projecto | `AGENTS.md` do repo de código, não aqui |
 | O que está a ser feito agora | `dcos/finhub/TASKS.md` do repo de código |
+| Nortes de produto do Hub beta | [docs/HUB_REORG_NORTES_2026-09-05.md](docs/HUB_REORG_NORTES_2026-09-05.md) · [FIN-126](https://linear.app/finhubpt/issue/FIN-126/hub-reorg-nortes-beta-ia-estrutura-i18n) |
 
 ---
 
