@@ -80,6 +80,12 @@ agente naquela máquina o veria.
 Regras extraídas da memória local do Codex (`~/.codex/memories/memory_summary.md`), onde só
 existiam nesta máquina. São o método, não preferências de estilo.
 
+**Entrega coordenada.** Ao escolher, executar, rever, integrar ou fechar tickets FinHub, usar a
+skill `coordinating-ticket-delivery`, distribuída pelo plugin `finhub-workflow`. É a fonte canónica
+para papéis, estados, capacidade, comunicação, gates por impacto, reviews e fecho operacional.
+Carregar uma vez por ticket/sessão e repetir apenas quando a versão mudar. O `AGENTS.md` do
+projecto acrescenta comandos e regras de produto e ganha em conflito.
+
 **Verificação — nunca confiar em auto-relato.** Confirmar de forma independente o código, o clone
 e a branch seleccionados, os docs, os contratos do backend e evidência **fresca** dos gates.
 Contestar propostas em vez de concordar por defeito. Distinguir três estados que não são o mesmo:
