@@ -44,7 +44,8 @@ for skill in "$REPO_DIR"/plugins/*/skills/*/; do
   linked=$((linked + 1))
 done
 
-# Agentes do Codex (~/.codex/agents) — mesma politica nao destrutiva
+# Agentes do Codex (~/.codex/agents) — actualizar copias historicas do repo,
+# preservar ficheiros personalizados.
 AGENTS_DIR="${CODEX_AGENTS_DIR:-$HOME/.codex/agents}"
 mkdir -p "$AGENTS_DIR"
 agents=0
@@ -52,8 +53,20 @@ for agent in "$REPO_DIR"/codex/agents/*.toml; do
   [ -f "$agent" ] || continue
   target="$AGENTS_DIR/$(basename "$agent")"
   if [ -e "$target" ] && [ ! -L "$target" ] && [ "$FORCE" != "1" ]; then
-    echo "  ! $(basename "$agent") ja existe como ficheiro real — nao tocado"
-    continue
+    relative="codex/agents/$(basename "$agent")"
+    blob="$(git -C "$REPO_DIR" hash-object --no-filters "$target" 2>/dev/null || true)"
+    ours=0
+    if [ -n "$blob" ]; then
+      for c in $(git -C "$REPO_DIR" log --format=%H -- "$relative" 2>/dev/null); do
+        if [ "$(git -C "$REPO_DIR" rev-parse "$c:$relative" 2>/dev/null)" = "$blob" ]; then
+          ours=1; break
+        fi
+      done
+    fi
+    if [ "$ours" != "1" ]; then
+      echo "  ! $(basename "$agent") ja existe como ficheiro proprio — nao tocado"
+      continue
+    fi
   fi
   rm -f "$target"
   ln -s "$agent" "$target"

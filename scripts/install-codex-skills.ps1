@@ -50,7 +50,8 @@ Get-ChildItem -Path (Join-Path $repoDir 'plugins') -Directory | ForEach-Object {
   }
 }
 
-# Agentes do Codex (~/.codex/agents) - mesma politica nao destrutiva
+# Agentes do Codex (~/.codex/agents) - actualizar copias historicas do repo,
+# preservar ficheiros personalizados.
 $agentsDir = if ($env:CODEX_AGENTS_DIR) { $env:CODEX_AGENTS_DIR } else { Join-Path $HOME (Join-Path ".codex" "agents") }
 New-Item -ItemType Directory -Force -Path $agentsDir | Out-Null
 $agents = 0
@@ -61,8 +62,19 @@ if (Test-Path $agentSource) {
     if (Test-Path $target) {
       $item = Get-Item $target -Force
       if ($item.LinkType -ne 'SymbolicLink' -and -not $Force) {
-        Write-Host "  ! $($_.Name) ja existe como ficheiro real - nao tocado (-Force para substituir)"
-        return
+        $relative = "codex/agents/$($_.Name)"
+        $blob = (& git -C $repoDir hash-object --no-filters $target 2>$null) | Select-Object -First 1
+        $ours = $false
+        if ($blob) {
+          foreach ($c in (& git -C $repoDir log --format=%H -- $relative 2>$null)) {
+            $historic = (& git -C $repoDir rev-parse "${c}:$relative" 2>$null) | Select-Object -First 1
+            if ($historic -eq $blob) { $ours = $true; break }
+          }
+        }
+        if (-not $ours) {
+          Write-Host "  ! $($_.Name) ja existe como ficheiro proprio - nao tocado (-Force para substituir)"
+          return
+        }
       }
       Remove-Item $target -Force
     }

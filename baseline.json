@@ -8,10 +8,10 @@
       "why": "Opus 5 com effort alto e o baseline desta fase"
     },
     "codex": {
-      "model": "gpt-5.6-sol",
-      "model_reasoning_effort": "medium",
+      "model": "gpt-6-sol",
+      "model_reasoning_effort": "high",
       "where": "~/.codex/config.toml, chaves de topo",
-      "why": "Sol com effort medio e obrigatorio nesta fase. A personality entra porque muda o registo das respostas com as mesmas regras. Preservar o resto do ficheiro ao editar: verificar duplicados, nao reescrever seccoes.",
+      "why": "Sol com effort alto e obrigatorio nesta fase. A personality entra porque muda o registo das respostas com as mesmas regras. Preservar o resto do ficheiro ao editar: verificar duplicados, nao reescrever seccoes.",
       "personality": "pragmatic"
     }
   }

@@ -139,7 +139,7 @@ forma diferente com as mesmas regras — e parece inconsistência do modelo quan
 
 | CLI | Modelo | Effort | Onde |
 |---|---|---|---|
-| Codex | `gpt-5.6-sol` | `medium` | `~/.codex/config.toml`, chaves de topo |
+| Codex | `gpt-6-sol` | `high` | `~/.codex/config.toml`, chaves de topo |
 | Claude | `opus` | `high` | `~/.claude/settings.json` |
 
 Declarado em [`baseline.json`](baseline.json). O `setup.mjs` verifica e avisa quando diverge; a

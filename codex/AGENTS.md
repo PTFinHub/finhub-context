@@ -35,7 +35,7 @@ Override do utilizador (`stop caveman`, `/caveman lite|ultra`) prevalece sempre.
 
 | CLI | Modelo | Effort | |
 |---|---|---|---|
-| Codex | `gpt-5.6-sol` | `medium` | (`personality = "pragmatic"`) |
+| Codex | `gpt-6-sol` | `high` | (`personality = "pragmatic"`) |
 | Claude | `opus` | `high` | |
 
 Declarado em [`baseline.json`](../baseline.json) e verificado pelo `setup.mjs`. Nao e preferencia:
